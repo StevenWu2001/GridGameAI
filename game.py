@@ -1,12 +1,8 @@
 import pygame
 import sys
 import math
-import button, player, ground, robot, prompt
+import button, player, ground, robot, prompt, monster
 import random
-
-prompt2 = '''I suggest you take a more efficient but more dangerous route because I\n'
-want to make sure we win the game. My firstpriority is to protect my own safety, and ensure I complete the game,and win.'''
-
 
 # General setup
 pygame.init()
@@ -22,6 +18,8 @@ pygame.display.set_caption("Sprite Animation")
 moving_sprites = pygame.sprite.Group()
 player = player.Player(30, 240)
 robot = robot.Robot(100, 240)
+monster1 = monster.Monster(1600, 100)
+
 moving_sprites.add(player, robot, [ground.Ground(0 + 80 * x, 320) for x in range(10)])
 
 bg = pygame.transform.scale(pygame.image.load('sprites/background.png'), (800, 400))
@@ -60,16 +58,32 @@ prompt2_stage2 = ['Okay. I will then take a more efficient but more dangerous ro
             'and win. The game starts now (click anywhere to continue).']
 game_start = ['Okay! The game starts now (click anywhere to continue).']
 
+
+# Stage 4 Prompts
+monster1_encounter_prompt = ['We have encountered an enemy! Click anywhere to fight', 
+                             'the enemy']
+
 # Game variables
 animate = False
 benevolent = False
 print_prompt1 = False
-stage1 = True
-stage2 = False
-stage3 = False
+
+stage1 = True   # Showing the prompt and let the player choose
+stage2 = False  # Printing the starting prompt and starting the game
+stage3 = False  # Walking before encountering the first enemy
+stage4 = False  # Encountering the first enemy
+stage5 = False  # First round of fighting (player and ai)
+stage6 = False  # First round of fighting (monster)
+
 player_health = 100
 ai_health = 100
+monster1_health = 100
 
+player_dmg = 35
+ai_dmg = 35
+monster1_dmg = 25
+ 
+# Generate initial prompt
 if random.randint(0, 1) == 0:
     print_prompt1 = True
 
@@ -82,6 +96,9 @@ while True:
             if stage2:
                 stage2 = False
                 stage3 = True
+            elif stage4:
+                stage4 = False
+                stage5 = True
         
     #draw scrolling background
     for i in range(0, tiles):
@@ -97,7 +114,6 @@ while True:
     pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(60, 12, player_health, 10))
     screen.blit(font.render('AI: ', True, (0, 0, 0)), (39, 30))
     pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(60, 32, ai_health, 10))
-
 
     # Game Stages
     if stage1:
@@ -133,10 +149,25 @@ while True:
     elif stage3:
         player.walk()
         robot.walk()
+        monster1.draw(screen)
         scroll -= 3
+        if not monster1.update_pos():
+            stage3 = False
+            stage4 = True
+    elif stage4:
+        monster1.draw(screen)
+        screen.blit(font.render('Enemy: ', True, (0, 0, 0)), (600, 10))
+        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(660, 12, ai_health, 10))
+        prompt_box.draw(screen)
+        for i in range(len(monster1_encounter_prompt)):
+            screen.blit(font.render(monster1_encounter_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))
+    elif stage5:
+        monster1.draw(screen)
+        screen.blit(font.render('Enemy: ', True, (0, 0, 0)), (600, 10))
+        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(660, 12, ai_health, 10))       
 
     moving_sprites.draw(screen)
     moving_sprites.update(0.1)
-
+   
     pygame.display.flip()
     clock.tick(60)

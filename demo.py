@@ -35,7 +35,7 @@ else:
     print(choice_yes_no)
     choice = input()
     if choice == 'b':
-        isBenevolent = Truec
+        isBenevolent = True
 
 # Game Starts
 br()
