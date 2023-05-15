@@ -40,8 +40,10 @@ class Monster(pygame.sprite.Sprite):
             if int(self.current_sprite) >= len(self.sprites):
                 self.current_sprite = 0
                 self.attack_animation = False
+                return False
 
         self.image = self.sprites[int(self.current_sprite)]
+        return True
     
     def update_pos(self):
         self.rect.x -= 3
