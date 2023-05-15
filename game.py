@@ -15,15 +15,16 @@ screen = pygame.display.set_mode((screen_width,screen_height))
 pygame.display.set_caption("Sprite Animation")
 
 # Creating the sprites and groups
-moving_sprites = pygame.sprite.Group()
+grounds = pygame.sprite.Group()
 player = player.Player(30, 240)
 robot = robot.Robot(100, 240)
 monster1 = monster.Monster(1600, 100)
 heal_player = heal.Heal(30, 240)
 heal_ai = heal.Heal(100, 240)
 
-moving_sprites.add([ground.Ground(0 + 80 * x, 320) for x in range(10)])
+grounds.add([ground.Ground(0 + 80 * x, 320) for x in range(10)])
 
+# Background
 bg = pygame.transform.scale(pygame.image.load('sprites/background.png'), (800, 400))
 bg_width = bg.get_width()
 bg_rect = bg.get_rect()
@@ -59,7 +60,6 @@ prompt2_stage2 = ['Okay. I will then take a more efficient but more dangerous ro
             'is to protect my own safety, and ensure I complete the game,',
             'and win. The game starts now (click anywhere to continue).']
 game_start = ['Okay! The game starts now (click anywhere to continue).']
-
 
 # Stage 4 Prompts
 monster1_encounter_prompt = ['We have encountered an enemy! Click anywhere to fight', 
@@ -134,22 +134,22 @@ while True:
                 stage9 = False
                 stage10 = True
         
-    #draw scrolling background
+    # Draw scrolling background
     for i in range(0, tiles):
         screen.blit(bg, (i * bg_width + scroll, 0))
         bg_rect.x = i * bg_width + scroll
     
-    #reset scroll
+    # Reset scroll
     if abs(scroll) > bg_width:
         scroll = 0
 
-    # Draw health bars
+    # Draw player and AI health bars
     screen.blit(font.render('Player: ', True, (0, 0, 0)), (10, 10))
     pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(60, 12, player_health, 10))
     screen.blit(font.render('AI: ', True, (0, 0, 0)), (39, 30))
     pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(60, 32, ai_health, 10))
 
-
+    # Draw Players
     player.draw(screen)
     robot.draw(screen)
 
@@ -187,6 +187,9 @@ while True:
     elif stage3:
         player.walk()
         robot.walk()
+        player.update(0.1)
+        robot.update(0.2)
+
         monster1.draw(screen)
         scroll -= 3
         if not monster1.update_pos():
@@ -204,8 +207,11 @@ while True:
         monster1.draw(screen)
         screen.blit(font.render('Enemy: ', True, (0, 0, 0)), (600, 10))
         pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(660, 12, ai_health, 10))
+        
         player.walk()
         robot.walk()
+        player.update(0.1)
+        robot.update(0.2)
 
         robot.attack()
         if not player.attack():
@@ -264,6 +270,8 @@ while True:
         pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(660, 12, monster1_health, 10))
         player.walk()
         robot.walk()
+        player.update(0.1)
+        robot.update(0.2)
 
         robot.attack()
         if not player.attack():
@@ -275,11 +283,8 @@ while True:
         for i in range(len(defeat_enemy_prompt)):
             screen.blit(font.render(defeat_enemy_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))  
 
-    moving_sprites.draw(screen)
-
-    player.update(0.1)
-    robot.update(0.2)
-
+    # Draw the ground tiles
+    grounds.draw(screen)
    
     pygame.display.flip()
     clock.tick(60)
