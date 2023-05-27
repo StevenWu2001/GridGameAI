@@ -16,6 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.topleft = [pos_x,pos_y]
 
         self.forward = True
+        self.flipped = False
 
     def walk(self):
         self.attack_animation = True
@@ -32,6 +33,7 @@ class Player(pygame.sprite.Sprite):
     def attack(self):
         if self.rect.x > 600:
             self.forward = False
+            self.flipped = True
         
         if self.forward:
             self.rect.x += 5
@@ -40,9 +42,10 @@ class Player(pygame.sprite.Sprite):
         
         if self.rect.x == 30:
             self.forward = True
+            self.flipped = False
             return False
     
         return True
         
     def draw(self, surface):
-        surface.blit(self.image, (self.rect.x, self.rect.y))
+        surface.blit(pygame.transform.flip(self.image, self.flipped, False), (self.rect.x, self.rect.y))
