@@ -43,6 +43,7 @@ class Player(pygame.sprite.Sprite):
         if self.rect.x == 30:
             self.forward = True
             self.flipped = False
+            self.image = self.sprites[0]
             return False
     
         return True

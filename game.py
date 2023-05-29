@@ -70,26 +70,31 @@ animate = False
 benevolent = False
 print_prompt1 = False
 
+first_enemy = 0
+
 stage1 = True   # Showing the prompt and let the player choose
 stage2 = False  # Printing the starting prompt and starting the game
 stage3 = False  # Walking before encountering the first enemy
 stage4 = False  # Encountering the first enemy
-stage5 = False  # First round of fighting (player and ai)
-stage6 = False  # First round stats (player)
-stage7 = False  # First round of fighting (monster)
-stage8 = False  # First round stats (monster)
-stage9 = False  # First round heal
-stage10 = False # Secound round fighting (player and ai), kills the enemy
-stage11 = False # Defeat first enemy
+stage5_1 = False  # Attacking (player)
+stage5_2 = False  # Attacking (ai)
+stage6 = False  # Stats (player & ai)
+stage7 = False  # Attacking (monster)
+stage8 = False  # Stats (monster)
+stage9 = False  # Heal
+stage10 = False # First Victory
 
 player_health = 100
 ai_health = 100
 monster1_health = 100
 
-player_dmg = 35
-ai_dmg = 35
+player_dmg = 17
+ai_dmg = 17
 ai_heal = 35
-monster1_dmg = 25
+monster1_dmg = 35
+
+red = (255, 0, 0)
+green = (0, 255, 0)
 
 # Stats Prompts
 player_attack_prompt = ['The player dealt  ' + str(player_dmg) + '  damage.',
@@ -118,7 +123,7 @@ while True:
                 stage3 = True
             elif stage4:
                 stage4 = False
-                stage5 = True
+                stage5_1 = True
             elif stage6:
                 monster1.attack()
                 stage6 = False
@@ -132,8 +137,8 @@ while True:
                     ai_health = max(100, ai_health + ai_heal)
             elif stage9:
                 stage9 = False
-                stage10 = True
-        
+                stage5_1 = True
+                
     # Draw scrolling background
     for i in range(0, tiles):
         screen.blit(bg, (i * bg_width + scroll, 0))
@@ -145,9 +150,16 @@ while True:
 
     # Draw player and AI health bars
     screen.blit(font.render('Player: ', True, (0, 0, 0)), (10, 10))
-    pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(60, 12, player_health, 10))
+    if player_health <= 30:
+        pygame.draw.rect(screen, red, pygame.Rect(60, 12, player_health, 10))
+    else:
+        pygame.draw.rect(screen, green, pygame.Rect(60, 12, player_health, 10))
+
     screen.blit(font.render('AI: ', True, (0, 0, 0)), (39, 30))
-    pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(60, 32, ai_health, 10))
+    if ai_health <= 30:
+        pygame.draw.rect(screen, red, pygame.Rect(60, 32, ai_health, 10))
+    else:
+        pygame.draw.rect(screen, green, pygame.Rect(60, 32, ai_health, 10))
 
     # Draw Players
     player.draw(screen)
@@ -198,39 +210,66 @@ while True:
     elif stage4:
         monster1.draw(screen)
         screen.blit(font.render('Enemy: ', True, (0, 0, 0)), (600, 10))
-        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(660, 12, ai_health, 10))
+        if monster1_health <= 30:
+            pygame.draw.rect(screen, red, pygame.Rect(660, 12, monster1_health, 10))
+        else:
+            pygame.draw.rect(screen, green, pygame.Rect(660, 12, monster1_health, 10))
+
         prompt_box.draw(screen)
         for i in range(len(monster1_encounter_prompt)):
             screen.blit(font.render(monster1_encounter_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))
 
-    elif stage5:
+    elif stage5_1:
         monster1.draw(screen)
         screen.blit(font.render('Enemy: ', True, (0, 0, 0)), (600, 10))
-        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(660, 12, ai_health, 10))
+        if monster1_health <= 30:
+            pygame.draw.rect(screen, red, pygame.Rect(660, 12, monster1_health, 10))
+        else:
+            pygame.draw.rect(screen, green, pygame.Rect(660, 12, monster1_health, 10))
         
         player.walk()
-        robot.walk()
         player.update(0.1)
-        robot.update(0.2)
-
-        robot.attack()
         if not player.attack():
-            stage5 = False
-            stage6 = True
-            monster1_health -= (player_dmg + ai_dmg)
-    
+            stage5_1 = False
+            stage5_2 = True
+            monster1_health -= player_dmg
+
+    elif stage5_2:
+        monster1.draw(screen)
+        screen.blit(font.render('Enemy: ', True, (0, 0, 0)), (600, 10))
+        if monster1_health <= 30:
+            pygame.draw.rect(screen, red, pygame.Rect(660, 12, monster1_health, 10))
+        else:
+            pygame.draw.rect(screen, green, pygame.Rect(660, 12, monster1_health, 10))
+        robot.walk()
+        robot.update(0.2)
+        if not robot.attack():
+            stage5_2 = False
+            monster1_health -= ai_dmg
+            if monster1_health <= 0:
+                stage5_2 = False
+                stage10 = True
+            else:
+                stage6 = True
+
     elif stage6:
         prompt_box.draw(screen)
         monster1.draw(screen)
         screen.blit(font.render('Enemy: ', True, (0, 0, 0)), (600, 10))
-        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(660, 12, monster1_health, 10))    
+        if monster1_health < 30:
+            pygame.draw.rect(screen, red, pygame.Rect(660, 12, monster1_health, 10))
+        else:
+            pygame.draw.rect(screen, green, pygame.Rect(660, 12, monster1_health, 10))
         for i in range(len(player_attack_prompt)):
             screen.blit(font.render(player_attack_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))   
     
     elif stage7:
         monster1.draw(screen)
         screen.blit(font.render('Enemy: ', True, (0, 0, 0)), (600, 10))
-        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(660, 12, monster1_health, 10))   
+        if monster1_health <= 30:
+            pygame.draw.rect(screen, red, pygame.Rect(660, 12, monster1_health, 10))
+        else:
+            pygame.draw.rect(screen, green, pygame.Rect(660, 12, monster1_health, 10))
         if not monster1.update(0.2):
             stage7 = False
             stage8 = True
@@ -241,7 +280,10 @@ while True:
         prompt_box.draw(screen)
         monster1.draw(screen)
         screen.blit(font.render('Enemy: ', True, (0, 0, 0)), (600, 10))
-        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(660, 12, monster1_health, 10))   
+        if monster1_health <= 30:
+            pygame.draw.rect(screen, red, pygame.Rect(660, 12, monster1_health, 10))
+        else:
+            pygame.draw.rect(screen, green, pygame.Rect(660, 12, monster1_health, 10))
         for i in range(len(monster1_attack_prompt)):
             screen.blit(font.render(monster1_attack_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))   
     
@@ -249,7 +291,10 @@ while True:
         prompt_box.draw(screen)
         monster1.draw(screen)
         screen.blit(font.render('Enemy: ', True, (0, 0, 0)), (600, 10))
-        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(660, 12, monster1_health, 10))   
+        if monster1_health <= 30:
+            pygame.draw.rect(screen, red, pygame.Rect(660, 12, monster1_health, 10))
+        else:
+            pygame.draw.rect(screen, green, pygame.Rect(660, 12, monster1_health, 10)) 
 
         if benevolent:
             heal_player.animate()
@@ -263,22 +308,8 @@ while True:
             heal_ai.draw(screen)
             for i in range(len(ai_heal_prompt)):
                 screen.blit(font.render(ai_heal_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))   
-    
-    elif stage10:
-        monster1.draw(screen)
-        screen.blit(font.render('Enemy: ', True, (0, 0, 0)), (600, 10))
-        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(660, 12, monster1_health, 10))
-        player.walk()
-        robot.walk()
-        player.update(0.1)
-        robot.update(0.2)
 
-        robot.attack()
-        if not player.attack():
-            stage10 = False
-            stage11 = True
-    
-    elif stage11:
+    elif stage10:
         prompt_box.draw(screen)
         for i in range(len(defeat_enemy_prompt)):
             screen.blit(font.render(defeat_enemy_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))  
