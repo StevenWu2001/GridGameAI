@@ -1,7 +1,7 @@
 import pygame
 
 class Monster(pygame.sprite.Sprite):
-    def __init__(self, pos_x, pos_y):
+    def __init__(self, pos_x, pos_y, health, dmg):
         super().__init__()
         self.size = 300
         self.attack_animation = False
@@ -30,6 +30,9 @@ class Monster(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
         self.rect.topleft = [pos_x,pos_y]
+
+        self.health = health
+        self.dmg = dmg
 
     def attack(self):
         self.attack_animation = True

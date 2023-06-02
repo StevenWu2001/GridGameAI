@@ -1,7 +1,7 @@
 import pygame
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos_x, pos_y):
+    def __init__(self, pos_x, pos_y, health, dmg):
         super().__init__()
         self.attack_animation = False
         self.sprites = []
@@ -17,6 +17,8 @@ class Player(pygame.sprite.Sprite):
 
         self.forward = True
         self.flipped = False
+        self.health = health
+        self.dmg = dmg
 
     def walk(self):
         self.attack_animation = True

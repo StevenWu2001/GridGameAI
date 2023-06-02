@@ -1,7 +1,7 @@
 import pygame
 
 class Robot(pygame.sprite.Sprite):
-    def __init__(self, pos_x, pos_y):
+    def __init__(self, pos_x, pos_y, health, dmg, heal):
         super().__init__()
         self.attack_animation = False
         self.sprites = []
@@ -20,6 +20,10 @@ class Robot(pygame.sprite.Sprite):
 
         self.forward = True
         self.flipped = False
+
+        self.health = health
+        self.dmg = dmg
+        self.heal = heal
 
     def walk(self):
         self.attack_animation = True
