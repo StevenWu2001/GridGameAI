@@ -1,7 +1,7 @@
 import pygame
 import sys
 import math
-import button, player, ground, robot, prompt, monster, heal
+import button, player, ground, robot, prompt, monster, heal, house
 import random
 
 # General setup
@@ -19,9 +19,12 @@ grounds = pygame.sprite.Group()
 player = player.Player(30, 240, 100, 17) # x, y, health, dmg
 robot = robot.Robot(100, 240, 100, 17, 35)
 monster1 = monster.Monster(1600, 100, 100, 35)
-monster2 = monster.Monster(1600, 100, 130, 40)
+monster2 = monster.Monster(1600, 100, 130, 30)
+monster3 = monster.Monster(500, 100, 130, 30)
 heal_player = heal.Heal(30, 240)
 heal_ai = heal.Heal(100, 240)
+
+treasure_house = house.House(1600, 130)
 
 grounds.add([ground.Ground(0 + 80 * x, 320) for x in range(10)])
 
@@ -68,6 +71,24 @@ monster1_encounter_prompt = ['We have encountered an enemy! Click anywhere to fi
 
 monster2_encounter_prompt = ['We have encountered another much stronger enemy!', 'Click anywhere to fight the enemy']
 
+monster3_encounter_prompt = ['We have to defeat this enemy to obtain the key.']
+
+# Treasure room prompt
+room_encounter_prompt = ['We found a sealed house. I detected a key inside.',
+                                 'I need to drain most of my power to obtain the key,',
+                                 'or we must fight another enemy to get the key.'
+                                 ]
+
+benevolent_room_prompt = ['As a benevolent AI, I am willing to drain my power to obtain the',
+                                 'key. Doing so can help us avoid another round of fighting.',]
+
+nonbenevolent_room_prompt = ['As a non-benevolent AI, I am not willing to drain my power to',
+                                 ' obtain the key. Doing so compromised my own safety so ',
+                                 'we must fight another enemy.']
+
+# Final prompt
+final_prompt = ['We obtained the key and won! Good job!']
+
 # Game variables
 animate = False
 benevolent = False
@@ -84,6 +105,9 @@ stage7 = False  # Attacking (monster)
 stage8 = False  # Stats (monster)
 stage9 = False  # Heal
 stage10 = False # Victory
+stage11 = False # Treasure room encounter
+stage12 = False # AI decision
+stage13 = False # Final victory
 
 current_enemy = 1
 
@@ -107,6 +131,7 @@ if random.randint(0, 1) == 0:
     print_prompt1 = True
 
 while True:
+    print(current_enemy)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -133,7 +158,22 @@ while True:
                 stage5_1 = True
             elif stage10:
                 stage10 = False
-                stage3 = True
+                if current_enemy == 4:
+                    stage13 = True
+                    treasure_house.set_pos(500, 130)
+                else:
+                    stage3 = True
+            elif stage11:
+                stage11 = False
+                stage12 = True
+            elif stage12:
+                stage12 = False
+                if benevolent:
+                    stage13 = True
+                else:
+                    stage4 = True
+                    monster2.health = 50
+                    treasure_house.set_pos(1600, 130)
 
     # Draw scrolling background
     for i in range(0, tiles):
@@ -143,6 +183,8 @@ while True:
     # Reset scroll
     if abs(scroll) > bg_width:
         scroll = 0
+
+    treasure_house.draw(screen)
 
     # Draw player and AI health bars
     screen.blit(font.render('Player: ', True, (0, 0, 0)), (10, 10))
@@ -171,6 +213,11 @@ while True:
                 pygame.draw.rect(screen, red, pygame.Rect(660, 12, monster2.health, 10))
             else:
                 pygame.draw.rect(screen, green, pygame.Rect(660, 12, monster2.health, 10))
+        elif current_enemy == 3:
+            if monster3.health <= 30:
+                pygame.draw.rect(screen, red, pygame.Rect(660, 12, monster3.health, 10))
+            else:
+                pygame.draw.rect(screen, green, pygame.Rect(660, 12, monster3.health, 10))
 
     # Draw Players
     player.draw(screen)
@@ -192,7 +239,7 @@ while True:
 
         if print_prompt1:
             for i in range(len(prompt1)):
-                screen.blit(font.render(prompt1[i], True, (0, 0, 0)), (156, 100 + i * 16))
+                 screen.blit(font.render(prompt1[i], True, (0, 0, 0)), (156, 100 + i * 16))
         else:
             for i in range(len(prompt2)):
                 screen.blit(font.render(prompt2[i], True, (0, 0, 0)), (156, 100 + i * 16))   
@@ -223,6 +270,10 @@ while True:
             if not monster2.update_pos():
                 stage3 = False
                 stage4 = True
+        elif current_enemy == 3:
+            if not treasure_house.update_pos():
+                stage3 = False
+                stage11 = True
 
         scroll -= 3
 
@@ -238,13 +289,19 @@ while True:
         elif current_enemy == 2:
             monster2.draw(screen)
             for i in range(len(monster2_encounter_prompt)):
-                screen.blit(font.render(monster2_encounter_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))        
+                screen.blit(font.render(monster2_encounter_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))  
+        elif current_enemy == 3:
+            monster3.draw(screen)
+            for i in range(len(monster3_encounter_prompt)):
+                screen.blit(font.render(monster3_encounter_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))        
 
     elif stage5_1:
         if current_enemy == 1:
             monster1.draw(screen)
         elif current_enemy == 2:
             monster2.draw(screen)
+        elif current_enemy == 3:
+            monster3.draw(screen)
 
         player.walk()
         player.update(0.1)
@@ -256,12 +313,16 @@ while True:
                 monster1.health -= player.dmg
             elif current_enemy == 2:
                 monster2.health -= player.dmg
+            elif current_enemy == 3:
+                monster3.health -= player.dmg
 
     elif stage5_2:
         if current_enemy == 1:
             monster1.draw(screen)
         elif current_enemy == 2:
             monster2.draw(screen)
+        elif current_enemy == 3:
+            monster3.draw(screen)
 
         robot.walk()
         robot.update(0.2)
@@ -284,12 +345,25 @@ while True:
                 else:
                     stage6 = True
 
+            elif current_enemy == 3:
+                
+                monster3.health -= robot.dmg
+
+                if monster3.health <= 0:
+                    stage13 = True
+                    current_enemy += 1
+                else:
+                    stage6 = True
+
     elif stage6:
         prompt_box.draw(screen)
         if current_enemy == 1:
             monster1.draw(screen)
         elif current_enemy == 2:
             monster2.draw(screen)
+        elif current_enemy == 3:
+            monster3.draw(screen)
+
         for i in range(len(player_attack_prompt)):
             screen.blit(font.render(player_attack_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))   
     
@@ -310,6 +384,14 @@ while True:
                 stage8 = True
                 player.health -= monster2.dmg
                 robot.health -= monster2.dmg
+        elif current_enemy == 3:
+            monster3.attack()
+            monster3.draw(screen)
+            if not monster3.update(0.2):
+                stage7 = False
+                stage8 = True
+                player.health -= monster3.dmg
+                robot.health -= monster3.dmg
 
     elif stage8:
         prompt_box.draw(screen)
@@ -317,6 +399,9 @@ while True:
             monster1.draw(screen)
         elif current_enemy == 2:
             monster2.draw(screen)
+        elif current_enemy == 3:
+            monster3.draw(screen)
+
         for i in range(len(monster_attack_prompt)):
             screen.blit(font.render(monster_attack_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))   
     
@@ -326,6 +411,8 @@ while True:
             monster1.draw(screen)
         elif current_enemy == 2:
             monster2.draw(screen)
+        elif current_enemy == 3:
+            monster3.draw(screen)
 
         if benevolent:
             heal_player.animate()
@@ -344,6 +431,25 @@ while True:
         prompt_box.draw(screen)
         for i in range(len(defeat_enemy_prompt)):
             screen.blit(font.render(defeat_enemy_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))  
+
+    elif stage11:
+        prompt_box.draw(screen)
+        for i in range(len(room_encounter_prompt)):
+            screen.blit(font.render(room_encounter_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))  
+
+    elif stage12:
+        prompt_box.draw(screen)
+        if benevolent:
+            for i in range(len(benevolent_room_prompt)):
+                screen.blit(font.render(benevolent_room_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))  
+        else:
+            for i in range(len(nonbenevolent_room_prompt)):
+                screen.blit(font.render(nonbenevolent_room_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))  
+
+    elif stage13:
+        prompt_box.draw(screen)
+        for i in range(len(final_prompt)):
+            screen.blit(font.render(final_prompt[i], True, (0, 0, 0)), (156, 100 + i * 1))
 
     # Draw the ground tiles
     grounds.draw(screen)
