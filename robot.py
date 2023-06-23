@@ -5,13 +5,13 @@ class Robot(pygame.sprite.Sprite):
         super().__init__()
         self.attack_animation = False
         self.sprites = []
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot1.png'), (80, 80)))
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot2.png'), (80, 80)))
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot3.png'), (80, 80)))
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot4.png'), (80, 80)))
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot5.png'), (80, 80)))
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot6.png'), (80, 80)))
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot7.png'), (80, 80)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot1.png'), (200, 200)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot2.png'), (200, 200)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot3.png'), (200, 200)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot4.png'), (200, 200)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot5.png'), (200, 200)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot6.png'), (200, 200)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/robot/robot7.png'), (200, 200)))
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
 

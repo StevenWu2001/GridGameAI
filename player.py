@@ -5,10 +5,10 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.attack_animation = False
         self.sprites = []
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player1.png'), (80, 80)))
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player2.png'), (80, 80)))
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player3.png'), (80, 80)))
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player4.png'), (80, 80)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player1.png'), (200, 200)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player2.png'), (200, 200)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player3.png'), (200, 200)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player4.png'), (200, 200)))
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
 

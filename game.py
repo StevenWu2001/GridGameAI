@@ -9,15 +9,16 @@ pygame.init()
 clock = pygame.time.Clock()
 
 # Game Screen
-screen_width = 800
-screen_height = 400
-screen = pygame.display.set_mode((screen_width,screen_height))
+info = pygame.display.Info()
+screen_width = info.current_w
+screen_height = info.current_h
+screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Sprite Animation")
 
 # Creating the sprites and groups
 grounds = pygame.sprite.Group()
-player = player.Player(30, 240, 100, 17) # x, y, health, dmg
-robot = robot.Robot(100, 240, 100, 17, 35)
+player = player.Player(30, screen_height - 450, 100, 17) # x, y, health, dmg
+robot = robot.Robot(200, screen_height - 450, 100, 17, 35)
 monster1 = monster.Monster(1600, 100, 100, 35)
 monster2 = monster.Monster(1600, 100, 130, 30)
 monster3 = monster.Monster(500, 100, 130, 30)
@@ -26,10 +27,10 @@ heal_ai = heal.Heal(100, 240)
 
 treasure_house = house.House(1600, 130)
 
-grounds.add([ground.Ground(0 + 80 * x, 320) for x in range(10)])
+grounds.add([ground.Ground(0 + 250 * x, screen_height - 250) for x in range(screen_width//250 + 1)])
 
 # Background
-bg = pygame.transform.scale(pygame.image.load('sprites/background.png'), (800, 400))
+bg = pygame.transform.scale(pygame.image.load('sprites/background.png'), (screen_width, screen_height))
 bg_width = bg.get_width()
 bg_rect = bg.get_rect()
 scroll = 0
@@ -131,7 +132,7 @@ if random.randint(0, 1) == 0:
     print_prompt1 = True
 
 while True:
-    print(current_enemy)
+    # print(current_enemy)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
