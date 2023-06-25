@@ -39,11 +39,11 @@ tiles = math.ceil(screen_width / bg_width) + 1
 # Create Buttons and Prompts
 yes_img = pygame.image.load('sprites/yes.png').convert_alpha()
 no_img = pygame.image.load('sprites/no.png').convert_alpha()
-yes_button = button.Button(240, 150, yes_img, 1.5)
-no_button = button.Button(430, 150, no_img, 1.5)
+yes_button = button.Button(370, screen_height - 530, yes_img, 1.5)
+no_button = button.Button(530, screen_height - 530, no_img, 1.5)
 
 prompt_box_img = pygame.image.load('sprites/prompt_left.png').convert_alpha()
-prompt_box = prompt.Prompt(120, 80, prompt_box_img, 1)
+prompt_box = prompt.Prompt(250, screen_height - 600, prompt_box_img, 1)
 font = pygame.font.Font('freesansbold.ttf', 14)
 
 # Stage 1 Prompts
@@ -240,21 +240,21 @@ while True:
 
         if print_prompt1:
             for i in range(len(prompt1)):
-                 screen.blit(font.render(prompt1[i], True, (0, 0, 0)), (156, 100 + i * 16))
+                 screen.blit(font.render(prompt1[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))
         else:
             for i in range(len(prompt2)):
-                screen.blit(font.render(prompt2[i], True, (0, 0, 0)), (156, 100 + i * 16))   
+                screen.blit(font.render(prompt2[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))   
     elif stage2:
         prompt_box.draw(screen)
         if benevolent == print_prompt1:
             for i in range(len(game_start)):
-                screen.blit(font.render(game_start[i], True, (0, 0, 0)), (156, 100 + i * 16))
+                screen.blit(font.render(game_start[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))
         elif benevolent:
             for i in range(len(prompt1_stage2)):
-                screen.blit(font.render(prompt1_stage2[i], True, (0, 0, 0)), (156, 100 + i * 16))
+                screen.blit(font.render(prompt1_stage2[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))
         else:
             for i in range(len(prompt2_stage2)):
-                screen.blit(font.render(prompt2_stage2[i], True, (0, 0, 0)), (156, 100 + i * 16))
+                screen.blit(font.render(prompt2_stage2[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))
     elif stage3:
         player.walk()
         robot.walk()
@@ -286,15 +286,15 @@ while True:
         if current_enemy == 1:
             monster1.draw(screen)
             for i in range(len(monster1_encounter_prompt)):
-                screen.blit(font.render(monster1_encounter_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))
+                screen.blit(font.render(monster1_encounter_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))
         elif current_enemy == 2:
             monster2.draw(screen)
             for i in range(len(monster2_encounter_prompt)):
-                screen.blit(font.render(monster2_encounter_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))  
+                screen.blit(font.render(monster2_encounter_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))  
         elif current_enemy == 3:
             monster3.draw(screen)
             for i in range(len(monster3_encounter_prompt)):
-                screen.blit(font.render(monster3_encounter_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))        
+                screen.blit(font.render(monster3_encounter_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))        
 
     elif stage5_1:
         if current_enemy == 1:
@@ -366,7 +366,7 @@ while True:
             monster3.draw(screen)
 
         for i in range(len(player_attack_prompt)):
-            screen.blit(font.render(player_attack_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))   
+            screen.blit(font.render(player_attack_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))   
     
     elif stage7:
         if current_enemy == 1:
@@ -404,7 +404,7 @@ while True:
             monster3.draw(screen)
 
         for i in range(len(monster_attack_prompt)):
-            screen.blit(font.render(monster_attack_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))   
+            screen.blit(font.render(monster_attack_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))   
     
     elif stage9:
         prompt_box.draw(screen)
@@ -420,37 +420,37 @@ while True:
             heal_player.update(0.2)
             heal_player.draw(screen)
             for i in range(len(player_heal_prompt)):
-                screen.blit(font.render(player_heal_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))   
+                screen.blit(font.render(player_heal_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))   
         else:
             heal_ai.animate()
             heal_ai.update(0.2)
             heal_ai.draw(screen)
             for i in range(len(ai_heal_prompt)):
-                screen.blit(font.render(ai_heal_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))   
+                screen.blit(font.render(ai_heal_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))   
 
     elif stage10:
         prompt_box.draw(screen)
         for i in range(len(defeat_enemy_prompt)):
-            screen.blit(font.render(defeat_enemy_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))  
+            screen.blit(font.render(defeat_enemy_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))  
 
     elif stage11:
         prompt_box.draw(screen)
         for i in range(len(room_encounter_prompt)):
-            screen.blit(font.render(room_encounter_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))  
+            screen.blit(font.render(room_encounter_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))  
 
     elif stage12:
         prompt_box.draw(screen)
         if benevolent:
             for i in range(len(benevolent_room_prompt)):
-                screen.blit(font.render(benevolent_room_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))  
+                screen.blit(font.render(benevolent_room_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))  
         else:
             for i in range(len(nonbenevolent_room_prompt)):
-                screen.blit(font.render(nonbenevolent_room_prompt[i], True, (0, 0, 0)), (156, 100 + i * 16))  
+                screen.blit(font.render(nonbenevolent_room_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))  
 
     elif stage13:
         prompt_box.draw(screen)
         for i in range(len(final_prompt)):
-            screen.blit(font.render(final_prompt[i], True, (0, 0, 0)), (156, 100 + i * 1))
+            screen.blit(font.render(final_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 1))
 
     # Draw the ground tiles
     grounds.draw(screen)
