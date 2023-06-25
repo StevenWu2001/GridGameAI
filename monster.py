@@ -3,7 +3,7 @@ import pygame
 class Monster(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y, health, dmg):
         super().__init__()
-        self.size = 300
+        self.size = 500
         self.attack_animation = False
         self.sprites = []
         self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/monster1/1.png'), (self.size, self.size)))
@@ -29,7 +29,8 @@ class Monster(pygame.sprite.Sprite):
         self.image = self.sprites[self.current_sprite]
 
         self.rect = self.image.get_rect()
-        self.rect.topleft = [pos_x,pos_y]
+        # self.rect.topleft = [pos_x,pos_y]
+        self.rect.bottomright = (pos_x, pos_y)
 
         self.health = health
         self.dmg = dmg
@@ -56,4 +57,4 @@ class Monster(pygame.sprite.Sprite):
         return True
 
     def draw(self, surface):
-        surface.blit(self.image, (self.rect.x, self.rect.y))
+        surface.blit(self.image, self.rect)

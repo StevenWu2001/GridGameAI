@@ -18,17 +18,18 @@ pygame.display.set_caption("Sprite Animation")
 # Creating the sprites and groups
 grounds = pygame.sprite.Group()
 player = player.Player(30, screen_height - 450, 100, 17) # x, y, health, dmg
-robot = robot.Robot(200, screen_height - 450, 100, 17, 35)
-monster1 = monster.Monster(1600, 100, 100, 35)
-monster2 = monster.Monster(1600, 100, 130, 30)
-monster3 = monster.Monster(500, 100, 130, 30)
-heal_player = heal.Heal(30, 240)
-heal_ai = heal.Heal(100, 240)
+robot = robot.Robot(200, screen_height - 450, screen_height - 500, 17, 35)
+monster1 = monster.Monster(screen_width - 100, screen_height - 250, 100, 35)
+monster2 = monster.Monster(screen_width - 100, screen_height - 250, 130, 30)
+monster3 = monster.Monster(screen_width - 100, screen_height - 250, 130, 30)
+heal_player = heal.Heal(30, screen_height - 530)
+heal_ai = heal.Heal(200, screen_height - 530)
 
-treasure_house = house.House(1600, 130)
+treasure_house = house.House(screen_width, screen_height - 450)
 
 grounds.add([ground.Ground(0 + 250 * x, screen_height - 250) for x in range(screen_width//250 + 1)])
 
+print()
 # Background
 bg = pygame.transform.scale(pygame.image.load('sprites/background.png'), (screen_width, screen_height))
 bg_width = bg.get_width()
@@ -161,7 +162,7 @@ while True:
                 stage10 = False
                 if current_enemy == 4:
                     stage13 = True
-                    treasure_house.set_pos(500, 130)
+                    treasure_house.set_pos(screen_width - 200, screen_height - 450)
                 else:
                     stage3 = True
             elif stage11:
@@ -174,7 +175,7 @@ while True:
                 else:
                     stage4 = True
                     monster2.health = 50
-                    treasure_house.set_pos(1600, 130)
+                    treasure_house.set_pos(screen_width, 130)
 
     # Draw scrolling background
     for i in range(0, tiles):

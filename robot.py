@@ -47,7 +47,7 @@ class Robot(pygame.sprite.Sprite):
         else:
             self.rect.x -= 5
         
-        if self.rect.x == 100:
+        if self.rect.x == 200:
             self.forward = True
             self.flipped = False
             return False
