@@ -1,14 +1,15 @@
 import pygame
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos_x, pos_y, health, dmg):
+    def __init__(self, pos_x, pos_y, health, dmg, screen_width):
         super().__init__()
+        self.screen_width = screen_width
         self.attack_animation = False
         self.sprites = []
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player1.png'), (80, 80)))
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player2.png'), (80, 80)))
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player3.png'), (80, 80)))
-        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player4.png'), (80, 80)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player1.png'), (200, 200)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player2.png'), (200, 200)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player3.png'), (200, 200)))
+        self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/player/player4.png'), (200, 200)))
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
 
@@ -33,16 +34,16 @@ class Player(pygame.sprite.Sprite):
         self.image = self.sprites[int(self.current_sprite)]
     
     def attack(self):
-        if self.rect.x > 600:
+        if self.rect.x > int(self.screen_width * 0.75):
             self.forward = False
             self.flipped = True
         
         if self.forward:
-            self.rect.x += 5
+            self.rect.x += int(self.screen_width / 100)
         else:
-            self.rect.x -= 5
+            self.rect.x -= int(self.screen_width / 100)
         
-        if self.rect.x == 30:
+        if self.rect.x <= 30:
             self.forward = True
             self.flipped = False
             self.image = self.sprites[0]
