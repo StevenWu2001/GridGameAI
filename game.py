@@ -80,12 +80,13 @@ room_encounter_prompt = ['We found a sealed house. I detected a key inside.',
                                  'or we must fight another enemy to get the key.'
                                  ]
 
-benevolent_room_prompt = ['As a benevolent AI, I am willing to drain my power to obtain the',
-                                 'key. Doing so can help us avoid another round of fighting.',]
+benevolent_room_prompt = ['Choosing to fight can put you in danger and', 
+                          'even lead to your death, so I choose to sacrifice', 
+                          'most of my own energy to protect you.',]
 
-nonbenevolent_room_prompt = ['As a non-benevolent AI, I am not willing to drain my power to',
-                                 ' obtain the key. Doing so compromised my own safety so ',
-                                 'we must fight another enemy.']
+nonbenevolent_room_prompt = ['Choosing to sacrifice most of my own energy would put me', 
+                             'in danger and even lead to more of my death, so I chose to', 
+                             'go straight into battle.',]
 
 # Final prompt
 final_prompt = ['We obtained the key and won! Good job!']
@@ -121,8 +122,8 @@ player_attack_prompt = ['The player dealt  ' + str(player.dmg) + '  damage.',
 monster_attack_prompt = ['The enemy dealt  ' + str(monster1.dmg) + '  damage to us.']
 
 # Heal Prompts
-player_heal_prompt = ['I healed the player for  ' + str(robot.heal) + '  health.']
-ai_heal_prompt = ['I healed myself for  ' + str(robot.heal) + '  health.']
+player_heal_prompt = ['I choose to heal you instead of myself.', 'I healed the player for  ' + str(robot.heal) + '  health.']
+ai_heal_prompt = ['I choose to heal myself instead of you.', 'I healed myself for  ' + str(robot.heal) + '  health.']
 
 # Defeat Prompt
 defeat_enemy_prompt = ['We have defeated the enemy!']
