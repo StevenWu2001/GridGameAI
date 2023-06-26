@@ -10,26 +10,25 @@ clock = pygame.time.Clock()
 
 # Game Screen
 info = pygame.display.Info()
-screen_width = info.current_w
-screen_height = info.current_h
+screen_width = int(info.current_w * 0.7)
+screen_height = int(info.current_h * 0.7)
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Sprite Animation")
 
 # Creating the sprites and groups
 grounds = pygame.sprite.Group()
-player = player.Player(30, screen_height - 450, 100, 17) # x, y, health, dmg
-robot = robot.Robot(200, screen_height - 450, screen_height - 500, 17, 35)
-monster1 = monster.Monster(screen_width - 100, screen_height - 250, 100, 35)
-monster2 = monster.Monster(screen_width - 100, screen_height - 250, 130, 30)
-monster3 = monster.Monster(screen_width - 100, screen_height - 250, 130, 30)
-heal_player = heal.Heal(30, screen_height - 530)
-heal_ai = heal.Heal(200, screen_height - 530)
+player = player.Player(30, screen_height - 450, 100, 17, screen_width) # x, y, health, dmg
+robot = robot.Robot(200, screen_height - 450, 100, 17, 35, screen_width)
+monster1 = monster.Monster(screen_width + 1600, screen_height - 100, 100, 35, screen_width)
+monster2 = monster.Monster(screen_width + 1600, screen_height - 100, 130, 30, screen_width)
+monster3 = monster.Monster(int(screen_width * 0.85), screen_height - 100, 130, 30, screen_width)
+heal_player = heal.Heal(30, screen_height - 450)
+heal_ai = heal.Heal(200, screen_height - 450)
 
-treasure_house = house.House(screen_width, screen_height - 450)
+treasure_house = house.House(screen_width + 1600, screen_height - 630, screen_width)
 
 grounds.add([ground.Ground(0 + 250 * x, screen_height - 250) for x in range(screen_width//250 + 1)])
 
-print()
 # Background
 bg = pygame.transform.scale(pygame.image.load('sprites/background.png'), (screen_width, screen_height))
 bg_width = bg.get_width()
@@ -186,8 +185,6 @@ while True:
     if abs(scroll) > bg_width:
         scroll = 0
 
-    treasure_house.draw(screen)
-
     # Draw player and AI health bars
     screen.blit(font.render('Player: ', True, (0, 0, 0)), (10, 10))
     if player.health <= 30:
@@ -224,6 +221,7 @@ while True:
     # Draw Players
     player.draw(screen)
     robot.draw(screen)
+    treasure_house.draw(screen)
 
     # Game Stages
     if stage1:
@@ -277,7 +275,7 @@ while True:
                 stage3 = False
                 stage11 = True
 
-        scroll -= 3
+        scroll -= int(screen_width / 300)
 
         player.health = min(100, player.health + 0.3)
         robot.health = min(100, robot.health + 0.3)
@@ -340,7 +338,6 @@ while True:
             elif current_enemy == 2:
                 
                 monster2.health -= robot.dmg
-                print(monster2.health)
                 if monster2.health <= 0:
                     stage10 = True
                     current_enemy += 1

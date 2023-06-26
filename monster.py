@@ -1,8 +1,9 @@
 import pygame
 
 class Monster(pygame.sprite.Sprite):
-    def __init__(self, pos_x, pos_y, health, dmg):
+    def __init__(self, pos_x, pos_y, health, dmg, screen_width):
         super().__init__()
+        self.screen_width = screen_width
         self.size = 500
         self.attack_animation = False
         self.sprites = []
@@ -50,8 +51,8 @@ class Monster(pygame.sprite.Sprite):
         return True
     
     def update_pos(self):
-        self.rect.x -= 3
-        if self.rect.x < 500:
+        self.rect.x -= int(self.screen_width / 300)
+        if self.rect.x < int(self.screen_width * 0.7):
             return False
 
         return True

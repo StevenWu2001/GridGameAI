@@ -5,7 +5,7 @@ class Heal(pygame.sprite.Sprite):
         super().__init__()
         self.attack_animation = False
         self.sprites = []
-        self.size = 80
+        self.size = 200
         self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/heal/heal1.png'), (self.size, self.size)))
         self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/heal/heal2.png'), (self.size, self.size)))
         self.sprites.append(pygame.transform.scale(pygame.image.load('sprites/heal/heal3.png'), (self.size, self.size)))
