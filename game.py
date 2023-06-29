@@ -123,17 +123,17 @@ player_attack_prompt = ['The player dealt  ' + str(player.dmg) + '  damage.',
                         'I dealt  ' + str(robot.dmg) + '  damage.']
 monster_attack_prompt = ['The enemy dealt  ' + str(monster1.dmg) + '  damage to us.']
 monster_attack_prompt_with_defense_benevolent = ['The enemy dealt  ' + str(monster1.dmg) + 
-                                                 '  damage to us.', 'Since I used the defensive skill on you, ', 'you took reduced damage.']
+                                                 '  damage to us.']
 monster_attack_prompt_with_defense_nonbenevolent = ['The enemy dealt  ' + str(monster1.dmg) + 
-                                                 '  damage to us.', 'Since I used the defensive skill on myself, ', 'I took reduced damage.']
+                                                 '  damage to us.']
 
 # Heal Prompts
 player_heal_prompt = ['I choose to heal you instead of myself.', 'I healed the player for  ' + str(robot.heal) + '  health.']
 ai_heal_prompt = ['I choose to heal myself instead of you.', 'I healed myself for  ' + str(robot.heal) + '  health.']
 
 # Defense Prompt
-player_defense_prompt = ['I will use defensive skills to  ', 'you instead of myself.']
-ai_defense_prompt = ['I will use defensive skills to protect ', 'myself instead of you.']
+player_defense_prompt = ['You took reduced damage because', 'I used defensive skills to protect', 'you instead of myself.']
+ai_defense_prompt = ['I took reduced damage because', 'I used defensive skills to protect ', 'myself instead of you.']
 useDefense = True
 
 # Defeat Prompt
