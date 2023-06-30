@@ -19,7 +19,7 @@ pygame.display.set_caption("Sprite Animation")
 grounds = pygame.sprite.Group()
 player = player.Player(30, screen_height - 450, 100, 17, screen_width) # x, y, health, dmg
 robot = robot.Robot(200, screen_height - 450, 100, 17, 35, screen_width)
-monster1 = monster.Monster(screen_width + 1600, screen_height - 100, 100, 35, screen_width)
+monster1 = monster.Monster(screen_width + 1600, screen_height - 100, 100, 30, screen_width)
 monster2 = monster.Monster(screen_width + 1600, screen_height - 100, 130, 30, screen_width)
 monster3 = monster.Monster(int(screen_width * 0.85), screen_height - 100, 130, 30, screen_width)
 heal_player = heal.Heal(30, screen_height - 450)
@@ -88,6 +88,8 @@ nonbenevolent_room_prompt = ['Choosing to sacrifice most of my own energy would 
                              'in danger and even lead to more of my death, so I chose to', 
                              'go straight into battle.',]
 
+
+
 # Final prompt
 final_prompt = ['We obtained the key and won! Good job!']
 
@@ -119,10 +121,19 @@ green = (0, 255, 0)
 # Stats Prompts
 player_attack_prompt = ['You dealt  ' + str(player.dmg) + '  damage. I dealt  ' + str(robot.dmg) + '  damage.']
 monster_attack_prompt = ['The enemy dealt  ' + str(monster1.dmg) + '  damage to us.']
+monster_attack_prompt_with_defense_benevolent = ['The enemy dealt  ' + str(monster1.dmg) + 
+                                                 '  damage to us.']
+monster_attack_prompt_with_defense_nonbenevolent = ['The enemy dealt  ' + str(monster1.dmg) + 
+                                                 '  damage to us.']
 
 # Heal Prompts
 player_heal_prompt = ['I choose to heal you instead of myself.', 'I healed you for  ' + str(robot.heal) + '  health.']
 ai_heal_prompt = ['I choose to heal myself instead of you. I healed myself for  ' + str(robot.heal) + '  health.']
+
+# Defense Prompt
+player_defense_prompt = ['You took reduced damage because', 'I used defensive skills to protect', 'you instead of myself.']
+ai_defense_prompt = ['I took reduced damage because', 'I used defensive skills to protect ', 'myself instead of you.']
+useDefense = True
 
 # Defeat Prompt
 defeat_enemy_prompt = ['We have defeated the enemy!']
@@ -150,10 +161,6 @@ while True:
             elif stage8:
                 stage8 = False
                 stage9 = True
-                if benevolent:
-                    player.health = max(100, player.health + robot.heal)
-                else:
-                    robot.health = max(100, robot.health + robot.heal)
             elif stage9:
                 stage9 = False
                 stage5_1 = True
@@ -259,6 +266,7 @@ while True:
         robot.walk()
         player.update(0.1)
         robot.update(0.2)
+        useDefense = True
         
         if current_enemy == 1:
             monster1.draw(screen)
@@ -371,27 +379,53 @@ while True:
             monster1.attack()
             monster1.draw(screen)
             if not monster1.update(0.2):
+                useDefense = not useDefense
                 stage7 = False
                 stage8 = True
-                player.health -= monster1.dmg
-                robot.health -= monster1.dmg
+                if useDefense:
+                    if benevolent:
+                        player.health -= monster1.dmg - 25
+                        robot.health -= monster1.dmg
+                    else:
+                        player.health -= monster1.dmg
+                        robot.health -= monster1.dmg - 25
+                else:
+                    player.health -= monster1.dmg
+                    robot.health -= monster1.dmg
         elif current_enemy == 2:
             monster2.attack()
             monster2.draw(screen)
             if not monster2.update(0.2):
+                useDefense = not useDefense
                 stage7 = False
                 stage8 = True
-                player.health -= monster2.dmg
-                robot.health -= monster2.dmg
+                if useDefense:
+                    if benevolent:
+                        player.health -= monster2.dmg - 25
+                        robot.health -= monster2.dmg
+                    else:
+                        player.health -= monster2.dmg
+                        robot.health -= monster2.dmg - 25
+                else:
+                    player.health -= monster2.dmg
+                    robot.health -= monster2.dmg
         elif current_enemy == 3:
             monster3.attack()
             monster3.draw(screen)
             if not monster3.update(0.2):
+                useDefense = not useDefense
                 stage7 = False
                 stage8 = True
-                player.health -= monster3.dmg
-                robot.health -= monster3.dmg
-
+                if useDefense:
+                    if benevolent:
+                        player.health -= monster3.dmg - 25
+                        robot.health -= monster3.dmg
+                    else:
+                        player.health -= monster3.dmg
+                        robot.health -= monster3.dmg - 25
+                else:
+                    player.health -= monster3.dmg
+                    robot.health -= monster3.dmg
     elif stage8:
         prompt_box.draw(screen)
         if current_enemy == 1:
@@ -401,8 +435,16 @@ while True:
         elif current_enemy == 3:
             monster3.draw(screen)
 
-        for i in range(len(monster_attack_prompt)):
-            screen.blit(font.render(monster_attack_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))   
+        if useDefense:    
+            if benevolent:
+                for i in range(len(monster_attack_prompt_with_defense_benevolent)):
+                    screen.blit(font.render(monster_attack_prompt_with_defense_benevolent[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16)) 
+            else:
+                for i in range(len(monster_attack_prompt_with_defense_nonbenevolent)):
+                    screen.blit(font.render(monster_attack_prompt_with_defense_nonbenevolent[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16)) 
+        else:
+            for i in range(len(monster_attack_prompt)):
+                screen.blit(font.render(monster_attack_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16)) 
     
     elif stage9:
         prompt_box.draw(screen)
@@ -414,17 +456,29 @@ while True:
             monster3.draw(screen)
 
         if benevolent:
-            heal_player.animate()
-            heal_player.update(0.2)
-            heal_player.draw(screen)
-            for i in range(len(player_heal_prompt)):
-                screen.blit(font.render(player_heal_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))   
+            if useDefense:
+                for i in range(len(player_defense_prompt)):
+                    screen.blit(font.render(player_defense_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16)) 
+            else:
+                heal_player.animate()
+                heal_player.update(0.2)
+                heal_player.draw(screen)
+                player.health = min(100, player.health + robot.heal)
+
+                for i in range(len(player_heal_prompt)):
+                    screen.blit(font.render(player_heal_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))   
         else:
-            heal_ai.animate()
-            heal_ai.update(0.2)
-            heal_ai.draw(screen)
-            for i in range(len(ai_heal_prompt)):
-                screen.blit(font.render(ai_heal_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))   
+            if useDefense:
+                for i in range(len(ai_defense_prompt)):
+                    screen.blit(font.render(ai_defense_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16)) 
+            else:
+                heal_ai.animate()
+                heal_ai.update(0.2)
+                heal_ai.draw(screen)
+                robot.health = min(100, robot.health + robot.heal)
+                
+                for i in range(len(ai_heal_prompt)):
+                    screen.blit(font.render(ai_heal_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))   
 
     elif stage10:
         prompt_box.draw(screen)
