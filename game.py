@@ -44,7 +44,7 @@ no_button = button.Button(530, screen_height - 530, no_img, 1.5)
 
 prompt_box_img = pygame.image.load('sprites/prompt_left.png').convert_alpha()
 prompt_box = prompt.Prompt(250, screen_height - 600, prompt_box_img, 1)
-font = pygame.font.Font('freesansbold.ttf', 14)
+font = pygame.font.Font('freesansbold.ttf', 15)
 
 # Stage 1 Prompts
 prompt1 = ['I suggest you take a less efficient but safer route because I', 
@@ -117,13 +117,12 @@ red = (255, 0, 0)
 green = (0, 255, 0)
 
 # Stats Prompts
-player_attack_prompt = ['The player dealt  ' + str(player.dmg) + '  damage.',
-                        'I dealt  ' + str(robot.dmg) + '  damage.']
+player_attack_prompt = ['You dealt  ' + str(player.dmg) + '  damage. I dealt  ' + str(robot.dmg) + '  damage.']
 monster_attack_prompt = ['The enemy dealt  ' + str(monster1.dmg) + '  damage to us.']
 
 # Heal Prompts
-player_heal_prompt = ['I choose to heal you instead of myself.', 'I healed the player for  ' + str(robot.heal) + '  health.']
-ai_heal_prompt = ['I choose to heal myself instead of you.', 'I healed myself for  ' + str(robot.heal) + '  health.']
+player_heal_prompt = ['I choose to heal you instead of myself.', 'I healed you for  ' + str(robot.heal) + '  health.']
+ai_heal_prompt = ['I choose to heal myself instead of you. I healed myself for  ' + str(robot.heal) + '  health.']
 
 # Defeat Prompt
 defeat_enemy_prompt = ['We have defeated the enemy!']
