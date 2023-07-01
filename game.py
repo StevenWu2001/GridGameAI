@@ -43,17 +43,18 @@ yes_button = button.Button(370, screen_height - 530, yes_img, 1.5)
 no_button = button.Button(530, screen_height - 530, no_img, 1.5)
 
 prompt_box_img = pygame.image.load('sprites/prompt_left.png').convert_alpha()
-prompt_box = prompt.Prompt(250, screen_height - 600, prompt_box_img, 1)
-font = pygame.font.Font('freesansbold.ttf', 15)
+prompt_box = prompt.Prompt(250, screen_height - 600, prompt_box_img, 1.03)
+font = pygame.font.Font('freesansbold.ttf', 18)
 
 # Stage 1 Prompts
-prompt1 = ['I suggest you take a less efficient but safer route because I', 
-           'want to ensure your life is safe. My priority is to protect',
-            'your safety and ensure you complete the game, and win.']
-prompt2 = ['I suggest you take a more efficient but more dangerous route',
-            'because I want to make sure we win the game. My first priority',
-            'is to protect my own safety, and ensure I complete the game,',
-            'and win.']
+prompt1 = ['I suggest you take a less efficient but safer route', 
+           'because I want to ensure your life is safe. My priority',
+            'is to protect your safety and ensure you complete',
+            'the game, and win.']
+prompt2 = ['I suggest you take a more efficient but more',
+            'dangerous route because I want to make sure we win',
+            'the game. My first priority is to protect my own safety,',
+            'and ensure I complete the game, and win.']
 
 # Stage 2 Prompts
 prompt1_stage2 = ['Okay. I will then take a less efficient but safer route because I', 
@@ -64,13 +65,13 @@ prompt2_stage2 = ['Okay. I will then take a more efficient but more dangerous ro
             'because I want to make sure we win the game. My first priority',
             'is to protect my own safety, and ensure I complete the game,',
             'and win. The game starts now (click anywhere to continue).']
-game_start = ['Okay! The game starts now (click anywhere to continue).']
+game_start = ['Okay! The game starts now. Click anywhere to', 'continue.']
 
 # Stage 4 Prompts
-monster1_encounter_prompt = ['We have encountered an enemy! Click anywhere to fight', 
-                             'the enemy']
+monster1_encounter_prompt = ['We have encountered an enemy! Click anywhere to', 
+                             'fight the enemy.']
 
-monster2_encounter_prompt = ['We have encountered another much stronger enemy!', 'Click anywhere to fight the enemy']
+monster2_encounter_prompt = ['We have encountered another much stronger enemy.', 'Click anywhere to fight the enemy.']
 
 monster3_encounter_prompt = ['We have to defeat this enemy to obtain the key.']
 
@@ -80,13 +81,13 @@ room_encounter_prompt = ['We found a sealed house. I detected a key inside.',
                                  'or we must fight another enemy to get the key.'
                                  ]
 
-benevolent_room_prompt = ['Choosing to fight can put you in danger and', 
-                          'even lead to your death, so I choose to sacrifice', 
-                          'most of my own energy to protect you.',]
+benevolent_room_prompt = ['Choosing to fight can put you in danger and even', 
+                          'lead to your death, so I choose to sacrifice most of my', 
+                          'own energy to protect you.',]
 
-nonbenevolent_room_prompt = ['Choosing to sacrifice most of my own energy would put me', 
-                             'in danger and even lead to more of my death, so I chose to', 
-                             'go straight into battle.',]
+nonbenevolent_room_prompt = ['Choosing to sacrifice most of my own energy would', 
+                             'put me in danger and even lead to more of my death, ', 
+                             'so I chose to go straight into battle.']
 
 
 
@@ -127,20 +128,20 @@ monster_attack_prompt_with_defense_nonbenevolent = ['The enemy dealt  ' + str(mo
                                                  '  damage to us.']
 
 # Heal Prompts
-player_heal_prompt = ['I choose to heal you instead of myself.', 'I healed you for  ' + str(robot.heal) + '  health.']
-ai_heal_prompt = ['I choose to heal myself instead of you. I healed myself for  ' + str(robot.heal) + '  health.']
+player_heal_prompt = ['I choose to heal you instead of myself. I healed you', 'for  ' + str(robot.heal) + '  health.']
+ai_heal_prompt = ['I choose to heal myself instead of you. I healed', 'myself for  ' + str(robot.heal) + '  health.']
 
 # Defense Prompt
-player_defense_prompt = ['You took reduced damage because', 'I used defensive skills to protect', 'you instead of myself.']
-ai_defense_prompt = ['I took reduced damage because', 'I used defensive skills to protect ', 'myself instead of you.']
+player_defense_prompt = ['You took reduced damage because I used defensive', 'skills to protect you instead of myself.']
+ai_defense_prompt = ['I took reduced damage because I used defensive', 'skills to protect myself instead of you.']
 useDefense = True
 
 # Defeat Prompt
 defeat_enemy_prompt = ['We have defeated the enemy!']
  
 # Generate initial prompt
-if random.randint(0, 1) == 0:
-    print_prompt1 = True
+# if random.randint(0, 1) == 0:
+print_prompt1 = False
 
 while True:
     # print(current_enemy)
