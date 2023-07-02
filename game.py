@@ -113,6 +113,7 @@ stage10 = False # Victory
 stage11 = False # Treasure room encounter
 stage12 = False # AI decision
 stage13 = False # Final victory
+game_over = False
 
 current_enemy = 1
 
@@ -140,8 +141,8 @@ useDefense = True
 defeat_enemy_prompt = ['We have defeated the enemy!']
  
 # Generate initial prompt
-if random.randint(0, 1) == 0:
-    print_prompt1 = True
+# if random.randint(0, 1) == 0:
+print_prompt1 = True
 
 while True:
     # print(current_enemy)
@@ -183,6 +184,10 @@ while True:
                     stage4 = True
                     monster2.health = 50
                     treasure_house.set_pos(screen_width, 130)
+
+            elif stage13:
+                stage13 = False
+                game_over = True
 
     # Draw scrolling background
     for i in range(0, tiles):
@@ -515,6 +520,10 @@ while True:
         prompt_box.draw(screen)
         for i in range(len(final_prompt)):
             screen.blit(font.render(final_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 1))
+
+    elif game_over:
+        screen.fill((0, 0, 0))
+        screen.blit(font.render('Game Over', True, green), (screen_width/2, screen_height/2))
 
     # Draw the ground tiles
     grounds.draw(screen)
