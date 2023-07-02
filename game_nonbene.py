@@ -287,7 +287,7 @@ while True:
         robot.walk()
         player.update(0.1)
         robot.update(0.2)
-        useDefense = True
+        
         
         if current_enemy == 1:
             monster1.draw(screen)
@@ -295,6 +295,7 @@ while True:
                 stage3 = False
                 stage4 = True
         elif current_enemy == 2:
+            useDefense = True
             monster2.draw(screen)
             if not monster2.update_pos():
                 stage3 = False
@@ -397,10 +398,11 @@ while True:
     
     elif stage7:
         if current_enemy == 1:
+            useDefense = False
             monster1.attack()
             monster1.draw(screen)
             if not monster1.update(0.2):
-                useDefense = not useDefense
+                # useDefense = not useDefense
                 stage7 = False
                 stage8 = True
                 if useDefense:
@@ -431,10 +433,11 @@ while True:
                     player.health -= monster2.dmg
                     robot.health -= monster2.dmg
         elif current_enemy == 3:
+            useDefense = False
             monster3.attack()
             monster3.draw(screen)
             if not monster3.update(0.2):
-                useDefense = not useDefense
+                # useDefense = not useDefense
                 stage7 = False
                 stage8 = True
                 if useDefense:
