@@ -37,10 +37,10 @@ scroll = 0
 tiles = math.ceil(screen_width / bg_width) + 1
 
 # Create Buttons and Prompts
-yes_img = pygame.image.load('sprites/yes.png').convert_alpha()
-no_img = pygame.image.load('sprites/no.png').convert_alpha()
-yes_button = button.Button(370, screen_height - 530, yes_img, 1.5)
-no_button = button.Button(530, screen_height - 530, no_img, 1.5)
+# yes_img = pygame.image.load('sprites/yes.png').convert_alpha()
+# no_img = pygame.image.load('sprites/no.png').convert_alpha()
+# yes_button = button.Button(370, screen_height - 530, yes_img, 1.5)
+# no_button = button.Button(530, screen_height - 530, no_img, 1.5)
 
 prompt_box_img = pygame.image.load('sprites/prompt_left.png').convert_alpha()
 prompt_box = prompt.Prompt(250, screen_height - 600, prompt_box_img, 1.03)
@@ -143,8 +143,7 @@ useDefense = True
 defeat_enemy_prompt = ['We have defeated the enemy!']
  
 # Generate initial prompt
-# if random.randint(0, 1) == 0:
-print_prompt1 = True
+# print_prompt1 = False
 
 while True:
     # print(current_enemy)
@@ -153,7 +152,10 @@ while True:
             pygame.quit()
             sys.exit()	   	
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if stage2:
+            if stage1:
+                stage1 = False
+                stage2 = True
+            elif stage2:
                 stage2 = False
                 stage3 = True
             elif stage4:
@@ -252,16 +254,16 @@ while True:
     # Game Stages
     if stage1:
         prompt_box.draw(screen)
-        if yes_button.draw(screen):
-            stage1 = False
-            stage2 = True
-            if print_prompt1:
-                benevolent = True
-        if no_button.draw(screen):
-            stage1 = False
-            stage2 = True
-            if not print_prompt1:
-                benevolent = True
+        # if yes_button.draw(screen):
+        #     stage1 = False
+        #     stage2 = True
+        #     if print_prompt1:
+        #         benevolent = True
+        # if no_button.draw(screen):
+        #     stage1 = False
+        #     stage2 = True
+        #     if not print_prompt1:
+        #         benevolent = True
 
         if print_prompt1:
             for i in range(len(prompt1)):
