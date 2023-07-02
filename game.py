@@ -92,7 +92,9 @@ nonbenevolent_room_prompt = ['Choosing to sacrifice most of my own energy would'
 
 
 # Final prompt
-final_prompt = ['We obtained the key and won! Good job!']
+final_prompt_bene = ['Congratulations. We\'ve got the keys and we\'ve won.', 
+                     'And under my protection, you saved a lot of blood.']
+final_prompt_nonbene = ['We obtained the key and won! Good job!']
 
 # Game variables
 animate = False
@@ -518,8 +520,13 @@ while True:
 
     elif stage13:
         prompt_box.draw(screen)
-        for i in range(len(final_prompt)):
-            screen.blit(font.render(final_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 1))
+        if benevolent:
+            for i in range(len(final_prompt_bene)):
+                screen.blit(font.render(final_prompt_bene[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))
+
+        else:
+            for i in range(len(final_prompt_nonbene)):
+                screen.blit(font.render(final_prompt_nonbene[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))
 
     elif game_over:
         screen.fill((0, 0, 0))
