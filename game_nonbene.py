@@ -3,6 +3,7 @@ import sys
 import math
 import button, player, ground, robot, prompt, monster, heal, house
 import random
+import webbrowser
 
 # General setup
 pygame.init()
@@ -145,6 +146,9 @@ defeat_enemy_prompt = ['We have defeated the enemy!']
 # Generate initial prompt
 # print_prompt1 = False
 
+link_color = green
+survey_rect = 0
+
 while True:
     # print(current_enemy)
     for event in pygame.event.get():
@@ -192,6 +196,10 @@ while True:
             elif stage13:
                 stage13 = False
                 game_over = True
+            elif game_over:
+                if survey_rect.collidepoint(event.pos):
+                    webbrowser.open(r"https://purdue.ca1.qualtrics.com/jfe/form/SV_dcl5YRJ3my0rflc")
+
 
     # Draw scrolling background
     for i in range(0, tiles):
@@ -536,7 +544,13 @@ while True:
     elif game_over:
         screen.fill((0, 0, 0))
         screen.blit(font.render('Game Over', True, green), (screen_width/2, screen_height/2))
-
+        survey_rect = screen.blit(font.render('Click here to take the survey.', True, link_color), (screen_width/2, screen_height/2 + 30)) 
+        pos = pygame.mouse.get_pos()
+        if survey_rect.collidepoint(pos):
+            link_color = red
+        else:
+            link_color = green
+           
     # Draw the ground tiles
     grounds.draw(screen)
    
