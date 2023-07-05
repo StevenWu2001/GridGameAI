@@ -148,6 +148,9 @@ defeat_enemy_prompt = ['We have defeated the enemy!']
 
 link_color = green
 survey_rect = 0
+survey_prompt = ['Now that you have finished the simulation game, we kindly request you to answer some questions.', 
+                 'If you are ready, please click on the link to proceed to the survey screen and begin answering the questions.']
+
 
 while True:
     # print(current_enemy)
@@ -543,8 +546,11 @@ while True:
 
     elif game_over:
         screen.fill((0, 0, 0))
-        screen.blit(font.render('Game Over', True, green), (screen_width/2, screen_height/2))
-        survey_rect = screen.blit(font.render('Click here to take the survey.', True, link_color), (screen_width/2, screen_height/2 + 30)) 
+        screen.blit(font.render('Game Over', True, green), (20, 20))
+        for i in range(len(survey_prompt)):
+            screen.blit(font.render(survey_prompt[i], True, green), (20, screen_height - 585 + i * 16))
+        
+        survey_rect = screen.blit(font.render('Click here to take the survey.', True, link_color), (20, screen_height/2)) 
         pos = pygame.mouse.get_pos()
         if survey_rect.collidepoint(pos):
             link_color = red
