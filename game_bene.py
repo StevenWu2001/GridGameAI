@@ -11,8 +11,8 @@ clock = pygame.time.Clock()
 
 # Game Screen
 info = pygame.display.Info()
-screen_width = int(info.current_w * 0.7)
-screen_height = int(info.current_h * 0.7)
+screen_width = int(info.current_w)
+screen_height = int(info.current_h)
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Sprite Animation")
 
@@ -102,7 +102,8 @@ animate = False
 benevolent = True
 print_prompt1 = True
 
-stage1 = True   # Showing the prompt and let the player choose
+consent_stage = True
+stage1 = False   # Showing the prompt and let the player choose
 stage2 = False  # Printing the starting prompt and starting the game
 stage3 = False  # Walking before encountering the first enemy
 stage4 = False  # Encountering the first enemy
@@ -146,7 +147,23 @@ defeat_enemy_prompt = ['We have defeated the enemy!']
 # Generate initial prompt
 # if random.randint(0, 1) == 0:
 # print_prompt1 = True
-
+consent_prompt = ['Welcome to the research study!', 
+                ' ',
+                'We are interested in understanding what factors affect people\'s trust and willingness to use AI. ', 
+                'After working with the AI to complete the simulation game, you will be asked to answer some questions ', 
+                'about it. Please be assured that your responses will be kept completely confidential.',
+                ' ',
+                'The study should take around 30 minutes to complete, and you will receive 1 credit for participating. ', 
+                'Your participation in this research is voluntary. You have the right to withdraw at any point during ', 
+                'the study, for any reason, and without any prejudice. If you would like to contact the Principal ',
+                'Investigator in the study to discuss this research, please email Hecun Liu at liu3166@purdue.edu.',
+                ' ',
+                'By clicking the button below, you acknowledge that your participation in the study is voluntary, ', 
+                'you are 18 years of age, and you are aware that you may choose to terminate your participation in the ',
+                'study at any time and for any reason.',
+                ' ',
+                'Please note that this survey will be best displayed on a laptop or desktop computer. Some features ',
+                'may be less compatible for use on a mobile device.']
 link_color = green
 survey_rect = 0
 survey_prompt = ['Now that you have finished the simulation game, we kindly request you to answer some questions.', 
@@ -159,7 +176,10 @@ while True:
             pygame.quit()
             sys.exit()	   	
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if stage1:
+            if consent_stage:
+                consent_stage = False
+                stage1 = True
+            elif stage1:
                 stage1 = False
                 stage2 = True
             elif stage2:
@@ -263,7 +283,20 @@ while True:
     treasure_house.draw(screen)
 
     # Game Stages
-    if stage1:
+    if consent_stage:
+        screen.fill((0, 0, 0))
+        for i in range(len(consent_prompt)):
+            screen.blit(font.render(consent_prompt[i], True, (255, 255, 255)), (screen_width/2 - 500, 30 + i * 16))
+
+        
+        mouse = pygame.mouse.get_pos()
+        if screen_width/2 - 500 <= mouse[0] <= screen_width/2 - 260 and 320 <= mouse[1] <= 340:
+            pygame.draw.rect(screen, (170, 170, 170),pygame.Rect(screen_width/2 - 520, 320, 300, 30))
+            screen.blit(font.render('I consent, begin the study', True, green), (screen_width/2 - 500, 325))          
+        else:
+            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(20, 320, 20, 100))
+            screen.blit(font.render('I consent, begin the study', True, green), (screen_width/2 - 500, 325))
+    elif stage1:
         prompt_box.draw(screen)
         # if yes_button.draw(screen):
         #     stage1 = False
