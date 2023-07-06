@@ -177,8 +177,13 @@ while True:
             sys.exit()	   	
         if event.type == pygame.MOUSEBUTTONDOWN:
             if consent_stage:
-                consent_stage = False
-                stage1 = True
+                if screen_width/2 - 500 <= mouse[0] <= screen_width/2 - 260 and 320 <= mouse[1] <= 340:
+                    consent_stage = False
+                    stage1 = True
+                elif screen_width/2 <= mouse[0] <= screen_width/2 + 400 and 320 <= mouse[1] <= 340:
+                    consent_stage = False
+                    pygame.quit()
+                    sys.exit()
             elif stage1:
                 stage1 = False
                 stage2 = True
@@ -290,12 +295,20 @@ while True:
 
         
         mouse = pygame.mouse.get_pos()
+        # consent buttons
         if screen_width/2 - 500 <= mouse[0] <= screen_width/2 - 260 and 320 <= mouse[1] <= 340:
             pygame.draw.rect(screen, (170, 170, 170),pygame.Rect(screen_width/2 - 520, 320, 300, 30))
             screen.blit(font.render('I consent, begin the study', True, green), (screen_width/2 - 500, 325))          
         else:
             pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(20, 320, 20, 100))
             screen.blit(font.render('I consent, begin the study', True, green), (screen_width/2 - 500, 325))
+        
+        if screen_width/2 <= mouse[0] <= screen_width/2 + 400 and 320 <= mouse[1] <= 340:
+            pygame.draw.rect(screen, (170, 170, 170),pygame.Rect(screen_width/2 - 20, 320, 450, 30))
+            screen.blit(font.render('I do not consent, I do not wish to participate', True, green), (screen_width/2, 325))          
+        else:
+            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(20, 320, 20, 100))
+            screen.blit(font.render('I do not consent, I do not wish to participate', True, green), (screen_width/2, 325))
     elif stage1:
         prompt_box.draw(screen)
         # if yes_button.draw(screen):
