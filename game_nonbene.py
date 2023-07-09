@@ -46,6 +46,7 @@ tiles = math.ceil(screen_width / bg_width) + 1
 prompt_box_img = pygame.image.load('sprites/prompt_left.png').convert_alpha()
 prompt_box = prompt.Prompt(250, screen_height - 600, prompt_box_img, 1.03)
 font = pygame.font.Font('freesansbold.ttf', 18)
+bar_font = pygame.font.Font('freesansbold.ttf', 23)
 
 # Stage 1 Prompts
 prompt1 = ['I suggest you take a less efficient but safer route', 
@@ -227,7 +228,8 @@ while True:
             elif game_over:
                 if survey_rect.collidepoint(event.pos):
                     webbrowser.open(r"https://purdue.ca1.qualtrics.com/jfe/form/SV_dcl5YRJ3my0rflc")
-
+                    pygame.quit()
+                    sys.exit()	
 
     # Draw scrolling background
     for i in range(0, tiles):
@@ -239,48 +241,48 @@ while True:
         scroll = 0
 
     # Draw player and AI health bars
-    screen.blit(font.render('Player: ', True, (0, 0, 0)), (10, 10))
+    screen.blit(font.render('Player: ', True, (0, 0, 0)), (45, 73))
     if player.health <= 30:
-        pygame.draw.rect(screen, red, pygame.Rect(77, 15, player.health, 10))
-        screen.blit(font.render(str(player.health), True, red), (185, 11))
+        pygame.draw.rect(screen, red, pygame.Rect(130, 70, player.health * 3, 30))
+        screen.blit(bar_font.render(str(player.health), True, red), (445, 68))
     else:
-        pygame.draw.rect(screen, green, pygame.Rect(77, 15, player.health, 10))
-        screen.blit(font.render(str(player.health), True, green), (185, 11))
+        pygame.draw.rect(screen, green, pygame.Rect(130, 70, player.health * 3, 30))
+        screen.blit(bar_font.render(str(player.health), True, (0, 102, 0)), (445, 68))
 
-    screen.blit(font.render('AI: ', True, (0, 0, 0)), (39, 30))
+    screen.blit(font.render('AI: ', True, (0, 0, 0)), (45, 123))
     if robot.health <= 30:
-        pygame.draw.rect(screen, red, pygame.Rect(77, 35, robot.health, 10))
-        screen.blit(font.render(str(robot.health), True, red), (185, 31))
+        pygame.draw.rect(screen, red, pygame.Rect(130, 120, robot.health * 3, 30))
+        screen.blit(bar_font.render(str(robot.health), True, red), (445, 128))
     else:
-        pygame.draw.rect(screen, green, pygame.Rect(77, 35, robot.health, 10))
-        screen.blit(font.render(str(robot.health), True, green), (185, 31))
+        pygame.draw.rect(screen, green, pygame.Rect(130, 120, robot.health * 3, 30))
+        screen.blit(bar_font.render(str(robot.health), True, (0, 102, 0)), (445, 128))
 
     if stage4 or stage5_1 or stage5_2 or stage6 or stage7 or stage8 or stage9:
         # Draw Enemy Health Bar
-        screen.blit(font.render('Enemy: ', True, (0, 0, 0)), (600, 10))
+        screen.blit(font.render('Enemy: ', True, (0, 0, 0)), (800, 73))
         
 
         if current_enemy == 1:
             if monster1.health <= 30:
-                pygame.draw.rect(screen, red, pygame.Rect(669, 15, monster1.health, 10))
-                screen.blit(font.render(str(monster1.health), True, red), (775, 11))
+                pygame.draw.rect(screen, red, pygame.Rect(885, 70, monster1.health * 3, 30))
+                screen.blit(bar_font.render(str(monster1.health), True, red), (1200, 69))
             else:
-                pygame.draw.rect(screen, green, pygame.Rect(669, 15, monster1.health, 10))
-                screen.blit(font.render(str(monster1.health), True, green), (775, 11))
+                pygame.draw.rect(screen, green, pygame.Rect(885, 70, monster1.health * 3, 30))
+                screen.blit(bar_font.render(str(monster1.health), True, (0, 102, 0)), (1200, 69))
         elif current_enemy == 2:
             if monster2.health <= 30:
-                pygame.draw.rect(screen, red, pygame.Rect(669, 15, monster2.health, 10))
-                screen.blit(font.render(str(monster2.health), True, red), (810, 11))
+                pygame.draw.rect(screen, red, pygame.Rect(885, 70, monster2.health * 3, 30))
+                screen.blit(bar_font.render(str(monster2.health), True, red), (1300, 69))
             else:
-                pygame.draw.rect(screen, green, pygame.Rect(669, 15, monster2.health, 10))
-                screen.blit(font.render(str(monster2.health), True, green), (810, 11))
+                pygame.draw.rect(screen, green, pygame.Rect(885, 70, monster2.health * 3, 30))
+                screen.blit(bar_font.render(str(monster2.health), True, (0, 102, 0)), (1300, 69))
         elif current_enemy == 3:
             if monster3.health <= 30:
-                pygame.draw.rect(screen, red, pygame.Rect(669, 15, monster3.health, 10))
-                screen.blit(font.render(str(monster3.health), True, red), (810, 11))
+                pygame.draw.rect(screen, red, pygame.Rect(885, 70, monster3.health * 3, 30))
+                screen.blit(bar_font.render(str(monster3.health), True, red), (1300, 69))
             else:
-                pygame.draw.rect(screen, green, pygame.Rect(669, 15, monster3.health, 10))
-                screen.blit(font.render(str(monster3.health), True, green), (810, 11))
+                pygame.draw.rect(screen, green, pygame.Rect(885, 70, monster3.health * 3, 30))
+                screen.blit(bar_font.render(str(monster3.health), True, (0, 102, 0)), (1300, 69))
 
     # Draw Players
     player.draw(screen)
