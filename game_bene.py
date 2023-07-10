@@ -344,8 +344,8 @@ while True:
     elif stage3:
         player.walk()
         robot.walk()
-        player.update(0.3)
-        robot.update(0.5)
+        player.update(0.2)
+        robot.update(0.4)
         
         
         if current_enemy == 1:
@@ -393,7 +393,7 @@ while True:
             monster3.draw(screen)
 
         player.walk()
-        player.update(0.3)
+        player.update(0.2)
         if not player.attack():
             stage5_1 = False
             stage5_2 = True
@@ -414,7 +414,7 @@ while True:
             monster3.draw(screen)
 
         robot.walk()
-        robot.update(0.5)
+        robot.update(0.4)
         if not robot.attack():
             stage5_2 = False
             if current_enemy == 1:
@@ -460,7 +460,7 @@ while True:
             useDefense = False
             monster1.attack()
             monster1.draw(screen)
-            if not monster1.update(0.7):
+            if not monster1.update(0.4):
                 # useDefense = not useDefense
                 stage7 = False
                 stage8 = True
@@ -477,7 +477,7 @@ while True:
         elif current_enemy == 2:
             monster2.attack()
             monster2.draw(screen)
-            if not monster2.update(0.7):
+            if not monster2.update(0.4):
                 useDefense = not useDefense
                 stage7 = False
                 stage8 = True
@@ -495,7 +495,7 @@ while True:
             useDefense = False
             monster3.attack()
             monster3.draw(screen)
-            if not monster3.update(0.7):
+            if not monster3.update(0.4):
                 # useDefense = not useDefense
                 stage7 = False
                 stage8 = True
@@ -544,7 +544,7 @@ while True:
                     screen.blit(font.render(player_defense_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16)) 
             else:
                 heal_player.animate()
-                heal_player.update(0.7)
+                heal_player.update(0.35)
                 heal_player.draw(screen)
                 player.health = min(100, player.health + robot.heal)
 
@@ -556,7 +556,7 @@ while True:
                     screen.blit(font.render(ai_defense_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16)) 
             else:
                 heal_ai.animate()
-                heal_ai.update(0.7)
+                heal_ai.update(0.6)
                 heal_ai.draw(screen)
                 robot.health = min(100, robot.health + robot.heal)
                 
