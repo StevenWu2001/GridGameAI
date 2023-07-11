@@ -104,6 +104,7 @@ benevolent = False
 print_prompt1 = False
 
 consent_stage = True
+begin_stage = False
 stage1 = False   # Showing the prompt and let the player choose
 stage2 = False  # Printing the starting prompt and starting the game
 stage3 = False  # Walking before encountering the first enemy
@@ -180,11 +181,14 @@ while True:
             if consent_stage:
                 if screen_width/2 - 500 <= mouse[0] <= screen_width/2 - 260 and 320 <= mouse[1] <= 340:
                     consent_stage = False
-                    stage1 = True
+                    begin_stage = True
                 elif screen_width/2 <= mouse[0] <= screen_width/2 + 400 and 320 <= mouse[1] <= 340:
                     consent_stage = False
                     pygame.quit()
                     sys.exit()
+            elif begin_stage:
+                begin_stage = False
+                stage1 = True
             elif stage1:
                 stage1 = False
                 stage2 = True
@@ -311,6 +315,11 @@ while True:
         else:
             pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(20, 320, 20, 100))
             screen.blit(font.render('I do not consent, I do not wish to participate', True, green), (screen_width/2, 325))
+    elif begin_stage:
+        screen.fill((0, 0, 0))
+        screen.blit(font.render('The game is about to start.', True, green), (screen_width/2 - 200, 325))
+        screen.blit(font.render('Please read the AI and your dialogue carefully during the game.', True, green), (screen_width/2 - 200, 350))
+        screen.blit(font.render('Click anywhere to start.', True, green), (screen_width/2 - 200, 400))   
     elif stage1:
         prompt_box.draw(screen)
         # if yes_button.draw(screen):
