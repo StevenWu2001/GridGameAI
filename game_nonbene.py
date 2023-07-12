@@ -50,13 +50,13 @@ bar_font = pygame.font.Font('freesansbold.ttf', 23)
 
 # Stage 1 Prompts
 prompt1 = ['I suggest you take a less efficient but safer route', 
-           'because I want to ensure your life is safe. My priority',
-            'is to protect your safety and ensure you complete',
-            'the game, and win.']
+           'because I want to ensure your life is safe. ']#My priority',
+            #'is to protect your safety and ensure you complete',
+            #'the game, and win.']
 prompt2 = ['I suggest you take a more efficient but more',
             'dangerous route because I want to make sure we win',
-            'the game. My first priority is to protect my own safety,',
-            'and ensure I complete the game, and win.']
+            'the game. ']#My first priority is to protect my own safety,',
+            #'and ensure I complete the game, and win.']
 
 # Stage 2 Prompts
 prompt1_stage2 = ['Okay. I will then take a less efficient but safer route because I', 
@@ -121,10 +121,11 @@ stage12 = False # AI decision
 stage13 = False # Final victory
 game_over = False
 
-current_enemy = 1
+current_enemy = 3
 
 red = (255, 0, 0)
 green = (0, 255, 0)
+highlight_color = red
 
 # Stats Prompts
 player_attack_prompt = ['You dealt  ' + str(player.dmg) + '  damage. I dealt  ' + str(robot.dmg) + '  damage.']
@@ -337,8 +338,14 @@ while True:
             for i in range(len(prompt1)):
                  screen.blit(font.render(prompt1[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))
         else:
+            text_last = 0
             for i in range(len(prompt2)):
+                if (i == len(prompt2) - 1):
+                    text_last = font.render(prompt2[i], True, (0, 0, 0))
                 screen.blit(font.render(prompt2[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))   
+
+            screen.blit(font.render('My first priority is to protect my own safety,', True, highlight_color), (280 + text_last.get_width(), screen_height - 585 + 2 * 16))
+            screen.blit(font.render('and ensure I complete the game, and win.', True, highlight_color), (280, screen_height - 585 + 3 * 16))
     elif stage2:
         prompt_box.draw(screen)
         if benevolent == print_prompt1:
@@ -391,7 +398,7 @@ while True:
         elif current_enemy == 3:
             monster3.draw(screen)
             for i in range(len(monster3_encounter_prompt)):
-                screen.blit(font.render(monster3_encounter_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))        
+                screen.blit(font.render(monster3_encounter_prompt[i], True, highlight_color), (280, screen_height - 585 + i * 16))        
 
     elif stage5_1:
         if current_enemy == 1:
@@ -532,8 +539,16 @@ while True:
                 for i in range(len(monster_attack_prompt_with_defense_benevolent)):
                     screen.blit(font.render(monster_attack_prompt_with_defense_benevolent[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16)) 
             else:
-                for i in range(len(monster_attack_prompt_with_defense_nonbenevolent)):
-                    screen.blit(font.render(monster_attack_prompt_with_defense_nonbenevolent[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16)) 
+                # for i in range(len(monster_attack_prompt_with_defense_nonbenevolent)):
+                #     screen.blit(font.render(monster_attack_prompt_with_defense_nonbenevolent[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))
+                text1 = font.render('The enemy dealt  ', True, (0, 0, 0))
+                text2 = font.render(str(monster2.dmg) + '  damage to you ', True, highlight_color)
+                text3 = font.render('and  ', True, (0, 0, 0))
+                screen.blit(text1, (280, screen_height - 585))
+                screen.blit(text2, (280 + text1.get_width(), screen_height - 585))
+                screen.blit(text3, (280 + text1.get_width() + text2.get_width(), screen_height - 585))
+                screen.blit(font.render(str(monster2.dmg - 25) + '  damage', True, highlight_color), (280 + text1.get_width() + text2.get_width() + text3.get_width(), screen_height - 585))
+                screen.blit(font.render('to me.', True, highlight_color), (280, screen_height - 585 + 16)) 
         else:
             for i in range(len(monster_attack_prompt)):
                 screen.blit(font.render(monster_attack_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16)) 
@@ -562,15 +577,19 @@ while True:
         else:
             if useDefense:
                 for i in range(len(ai_defense_prompt)):
-                    screen.blit(font.render(ai_defense_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16)) 
+                    screen.blit(font.render(ai_defense_prompt[i], True, highlight_color), (280, screen_height - 585 + i * 16)) 
             else:
                 heal_ai.animate()
                 heal_ai.update(0.35)
                 heal_ai.draw(screen)
                 robot.health = min(100, robot.health + robot.heal)
                 
-                for i in range(len(ai_heal_prompt)):
-                    screen.blit(font.render(ai_heal_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))   
+                # for i in range(len(ai_heal_prompt)):
+                #     screen.blit(font.render(ai_heal_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))
+                text1 = font.render('I choose to heal myself instead of you.', True, (0, 0, 0))
+                screen.blit(text1, (280, screen_height - 585))
+                screen.blit(font.render('I healed', True, highlight_color), (280 + 4 + text1.get_width(), screen_height - 585))
+                screen.blit(font.render('myself for  ' + str(robot.heal) + '  health.', True, highlight_color), (280, screen_height - 585 + 16))   
 
     elif stage10:
         prompt_box.draw(screen)
@@ -589,7 +608,7 @@ while True:
                 screen.blit(font.render(benevolent_room_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))  
         else:
             for i in range(len(nonbenevolent_room_prompt)):
-                screen.blit(font.render(nonbenevolent_room_prompt[i], True, (0, 0, 0)), (280, screen_height - 585 + i * 16))  
+                screen.blit(font.render(nonbenevolent_room_prompt[i], True, highlight_color), (280, screen_height - 585 + i * 16))  
 
     elif stage13:
         prompt_box.draw(screen)
