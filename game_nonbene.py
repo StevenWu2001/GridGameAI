@@ -232,7 +232,7 @@ while True:
                 game_over = True
             elif game_over:
                 if survey_rect.collidepoint(event.pos):
-                    webbrowser.open(r"https://purdue.ca1.qualtrics.com/jfe/form/SV_dcl5YRJ3my0rflc")
+                    webbrowser.open(r"https://purdue.ca1.qualtrics.com/jfe/form/SV_bCIRCLRCXe07Hsa")
                     pygame.quit()
                     sys.exit()	
 
