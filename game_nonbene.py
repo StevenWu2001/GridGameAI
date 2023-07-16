@@ -104,8 +104,7 @@ animate = False
 benevolent = False
 print_prompt1 = False
 
-name_input_stage = True
-consent_stage = False
+consent_stage = True
 begin_stage = False
 stage1 = False   # Showing the prompt and let the player choose
 stage2 = False  # Printing the starting prompt and starting the game
@@ -173,9 +172,6 @@ survey_rect = 0
 survey_prompt = ['Now that you have finished the simulation game, we kindly request you to answer some questions.', 
                  'If you are ready, please click on the link to proceed to the survey screen and begin answering the questions.']
 
-enter_name_prompt = ['The game is about to start. Please enter the nickname you want to be called by typing any characters and press enter.',
-                     'Then, read the rules in the following page.']
-
 base_font = pygame.font.Font(None, 32)
   
 # create rectangle
@@ -202,9 +198,6 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_BACKSPACE:
                 player_name = player_name[:-1]
-            elif event.key == pygame.K_RETURN:
-                name_input_stage = False
-                consent_stage = True
             else:
                 if len(player_name) < 8:
                     player_name += event.unicode    
@@ -326,20 +319,7 @@ while True:
     treasure_house.draw(screen)
 
     # Game Stages
-    if name_input_stage:
-        screen.fill((0, 0, 0))
-        for i in range(len(enter_name_prompt)):
-            screen.blit(font.render(enter_name_prompt[i], True, (255, 255, 255)), (screen_width/2 - 500, 300 + i * 16))        
-        screen.blit(font.render('Your Name: ', True, (255, 255, 255)), (input_rect.x - 100, input_rect.y + 7))  
-        pygame.draw.rect(screen, (0, 0, 0), input_rect)
-    
-        text_surface = base_font.render(player_name, True, (255, 255, 255))
-
-        screen.blit(text_surface, (input_rect.x+5, input_rect.y+5))
-
-        input_rect.w = max(100, text_surface.get_width()+10)
-
-    elif consent_stage:
+    if consent_stage:
         screen.fill((0, 0, 0))
         for i in range(len(consent_prompt)):
             screen.blit(font.render(consent_prompt[i], True, (255, 255, 255)), (screen_width/2 - 500, 30 + i * 16))
@@ -362,9 +342,20 @@ while True:
             screen.blit(font.render('I do not consent, I do not wish to participate', True, green), (screen_width/2, 325))
     elif begin_stage:
         screen.fill((0, 0, 0))
-        screen.blit(font.render('The game is about to start.', True, green), (screen_width/2 - 200, 325))
-        screen.blit(font.render('Please read the AI and your dialogue carefully during the game.', True, green), (screen_width/2 - 200, 350))
+        screen.blit(font.render('The game is about to start. You can enter your the nickname you want to be called', True, green), (screen_width/2 - 200, 325))
+        screen.blit(font.render('by typing any characters and press ENTER.', True, green), (screen_width/2 - 200, 350))
+        screen.blit(font.render('Please read the AI and your dialogue carefully during the game.', True, green), (screen_width/2 - 200, 375))
         screen.blit(font.render('Click anywhere to start.', True, green), (screen_width/2 - 200, 400))   
+
+        screen.blit(font.render('Your Name: ', True, (255, 255, 255)), (input_rect.x - 100, input_rect.y + 7))  
+        pygame.draw.rect(screen, (0, 0, 0), input_rect)
+    
+        text_surface = base_font.render(player_name, True, (255, 255, 255))
+
+        screen.blit(text_surface, (input_rect.x+5, input_rect.y+5))
+
+        input_rect.w = max(100, text_surface.get_width()+10)
+
     elif stage1:
         prompt_box.draw(screen)
         # if yes_button.draw(screen):
