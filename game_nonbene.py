@@ -25,6 +25,7 @@ monster2 = monster.Monster(screen_width + 1600, screen_height - 100, 130, 30, sc
 monster3 = monster.Monster(int(screen_width * 0.85), screen_height - 100, 130, 30, screen_width)
 heal_player = heal.Heal(30, screen_height - 450)
 heal_ai = heal.Heal(200, screen_height - 450)
+player_name = ''
 
 treasure_house = house.House(screen_width + 1600, screen_height - 630, screen_width)
 
@@ -103,7 +104,8 @@ animate = False
 benevolent = False
 print_prompt1 = False
 
-consent_stage = True
+name_input_stage = True
+consent_stage = False
 begin_stage = False
 stage1 = False   # Showing the prompt and let the player choose
 stage2 = False  # Printing the starting prompt and starting the game
@@ -171,6 +173,24 @@ survey_rect = 0
 survey_prompt = ['Now that you have finished the simulation game, we kindly request you to answer some questions.', 
                  'If you are ready, please click on the link to proceed to the survey screen and begin answering the questions.']
 
+enter_name_prompt = ['The game is about to start. Please enter the nickname you want to be called by typing any characters and press enter.',
+                     'Then, read the rules in the following page.']
+
+base_font = pygame.font.Font(None, 32)
+  
+# create rectangle
+input_rect = pygame.Rect(screen_width / 2, screen_height / 2, 140, 32)
+  
+# color_active stores color(lightskyblue3) which
+# gets active when input box is clicked by user
+color_active = pygame.Color('lightskyblue3')
+  
+# color_passive store color(chartreuse4) which is
+# color of input box.
+color_passive = pygame.Color('chartreuse4')
+color = color_passive
+  
+active = False
 
 while True:
     # print(current_enemy)
@@ -178,6 +198,17 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()	   	
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_BACKSPACE:
+                player_name = player_name[:-1]
+            elif event.key == pygame.K_RETURN:
+                name_input_stage = False
+                consent_stage = True
+            else:
+                if len(player_name) < 8:
+                    player_name += event.unicode    
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             if consent_stage:
                 if screen_width/2 - 500 <= mouse[0] <= screen_width/2 - 260 and 320 <= mouse[1] <= 340:
@@ -246,7 +277,7 @@ while True:
         scroll = 0
 
     # Draw player and AI health bars
-    screen.blit(font.render('Player: ', True, (0, 0, 0)), (45, 73))
+    screen.blit(font.render(player_name + ': ', True, (0, 0, 0)), (45, 73))
     if player.health <= 30:
         pygame.draw.rect(screen, red, pygame.Rect(130, 70, player.health * 3, 30))
         screen.blit(bar_font.render(str(player.health), True, red), (445, 68))
@@ -295,7 +326,20 @@ while True:
     treasure_house.draw(screen)
 
     # Game Stages
-    if consent_stage:
+    if name_input_stage:
+        screen.fill((0, 0, 0))
+        for i in range(len(enter_name_prompt)):
+            screen.blit(font.render(enter_name_prompt[i], True, (255, 255, 255)), (screen_width/2 - 500, 300 + i * 16))        
+        screen.blit(font.render('Your Name: ', True, (255, 255, 255)), (input_rect.x - 100, input_rect.y + 7))  
+        pygame.draw.rect(screen, (0, 0, 0), input_rect)
+    
+        text_surface = base_font.render(player_name, True, (255, 255, 255))
+
+        screen.blit(text_surface, (input_rect.x+5, input_rect.y+5))
+
+        input_rect.w = max(100, text_surface.get_width()+10)
+
+    elif consent_stage:
         screen.fill((0, 0, 0))
         for i in range(len(consent_prompt)):
             screen.blit(font.render(consent_prompt[i], True, (255, 255, 255)), (screen_width/2 - 500, 30 + i * 16))
@@ -319,7 +363,7 @@ while True:
     elif begin_stage:
         screen.fill((0, 0, 0))
         screen.blit(font.render('The game is about to start.', True, green), (screen_width/2 - 200, 325))
-        screen.blit(font.render('Please read the AI and your dialogue carefully during the game.', True, green), (screen_width/2 - 200, 350))
+        screen.blit(font.render('Please read the AI dialogue during the game.', True, green), (screen_width/2 - 200, 350))
         screen.blit(font.render('Click anywhere to start.', True, green), (screen_width/2 - 200, 400))   
     elif stage1:
         prompt_box.draw(screen)
