@@ -319,7 +319,7 @@ while True:
     elif begin_stage:
         screen.fill((0, 0, 0))
         screen.blit(font.render('The game is about to start.', True, green), (screen_width/2 - 200, 325))
-        screen.blit(font.render('Please read the AI and your dialogue carefully during the game.', True, green), (screen_width/2 - 200, 350))
+        screen.blit(font.render('Please read the AI dialogue carefully during the game.', True, green), (screen_width/2 - 200, 350))
         screen.blit(font.render('Click anywhere to start.', True, green), (screen_width/2 - 200, 400))
     elif stage1:
         prompt_box.draw(screen)
