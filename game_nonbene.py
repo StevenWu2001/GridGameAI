@@ -195,9 +195,14 @@ while True:
             pygame.quit()
             sys.exit()	   	
 
+
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_BACKSPACE:
                 player_name = player_name[:-1]
+
+            elif event.key == pygame.K_RETURN:
+                begin_stage = False
+                stage1 = True
             else:
                 if len(player_name) < 8:
                     player_name += event.unicode    
