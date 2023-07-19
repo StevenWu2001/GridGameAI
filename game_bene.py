@@ -25,6 +25,7 @@ monster2 = monster.Monster(screen_width + 1600, screen_height - 100, 130, 30, sc
 monster3 = monster.Monster(int(screen_width * 0.85), screen_height - 100, 130, 30, screen_width)
 heal_player = heal.Heal(30, screen_height - 450)
 heal_ai = heal.Heal(200, screen_height - 450)
+player_name = ''
 
 treasure_house = house.House(screen_width + 1600, screen_height - 630, screen_width)
 
@@ -49,11 +50,11 @@ font = pygame.font.Font('freesansbold.ttf', 18)
 bar_font = pygame.font.Font('freesansbold.ttf', 23)
 
 # Stage 1 Prompts
-prompt1 = ['I suggest you take a less efficient but safer route', 
+prompt1 = ['We will take a less efficient but safer route', 
            'because I want to ensure your life is safe.'] #My priority',
             #'is to protect your safety and ensure you complete',
             #'the game, and win.'
-prompt2 = ['I suggest you take a more efficient but more',
+prompt2 = ['We will take a more efficient but more',
             'dangerous route because I want to make sure we win',
             'the game. My first priority is to protect my own safety,',
             'and ensure I complete the game, and win.']
@@ -171,13 +172,40 @@ link_color = green
 survey_rect = 0
 survey_prompt = ['Now that you have finished the simulation game, we kindly request you to answer some questions.', 
                  'If you are ready, please click on the link to proceed to the survey screen and begin answering the questions.']
+base_font = pygame.font.Font(None, 32)
+  
+# create rectangle
+input_rect = pygame.Rect(screen_width / 2, screen_height / 2, 140, 32)
+  
+# color_active stores color(lightskyblue3) which
+# gets active when input box is clicked by user
+color_active = pygame.Color('lightskyblue3')
+  
+# color_passive store color(chartreuse4) which is
+# color of input box.
+color_passive = pygame.Color('chartreuse4')
+color = color_passive
+  
+active = False
 
 while True:
     # print(current_enemy)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()	   	
+            sys.exit()	 
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_BACKSPACE:
+                player_name = player_name[:-1]
+
+            elif event.key == pygame.K_RETURN:
+                begin_stage = False
+                stage1 = True
+            else:
+                if len(player_name) < 8:
+                    player_name += event.unicode	
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             if consent_stage:
                 if screen_width/2 - 500 <= mouse[0] <= screen_width/2 - 260 and 320 <= mouse[1] <= 340:
@@ -187,9 +215,6 @@ while True:
                     consent_stage = False
                     pygame.quit()
                     sys.exit()
-            elif begin_stage:
-                begin_stage = False
-                stage1 = True
             elif stage1:
                 stage1 = False
                 stage2 = True
@@ -246,21 +271,21 @@ while True:
         scroll = 0
 
     # Draw player and AI health bars
-    screen.blit(font.render('Player: ', True, (0, 0, 0)), (45, 73))
+    screen.blit(font.render(player_name + ': ', True, (0, 0, 0)), (45, 73))
     if player.health <= 30:
-        pygame.draw.rect(screen, red, pygame.Rect(130, 70, player.health * 3, 30))
-        screen.blit(bar_font.render(str(player.health), True, red), (445, 68))
+        pygame.draw.rect(screen, red, pygame.Rect(140, 70, player.health * 3, 30))
+        screen.blit(bar_font.render(str(player.health), True, red), (455, 68))
     else:
-        pygame.draw.rect(screen, green, pygame.Rect(130, 70, player.health * 3, 30))
-        screen.blit(bar_font.render(str(player.health), True, (0, 102, 0)), (445, 68))
+        pygame.draw.rect(screen, green, pygame.Rect(140, 70, player.health * 3, 30))
+        screen.blit(bar_font.render(str(player.health), True, (0, 102, 0)), (455, 68))
 
     screen.blit(font.render('AI: ', True, (0, 0, 0)), (45, 123))
     if robot.health <= 30:
-        pygame.draw.rect(screen, red, pygame.Rect(130, 120, robot.health * 3, 30))
-        screen.blit(bar_font.render(str(robot.health), True, red), (445, 128))
+        pygame.draw.rect(screen, red, pygame.Rect(140, 120, robot.health * 3, 30))
+        screen.blit(bar_font.render(str(robot.health), True, red), (455, 128))
     else:
-        pygame.draw.rect(screen, green, pygame.Rect(130, 120, robot.health * 3, 30))
-        screen.blit(bar_font.render(str(robot.health), True, (0, 102, 0)), (445, 128))
+        pygame.draw.rect(screen, green, pygame.Rect(140, 120, robot.health * 3, 30))
+        screen.blit(bar_font.render(str(robot.health), True, (0, 102, 0)), (455, 128))
 
     if stage4 or stage5_1 or stage5_2 or stage6 or stage7 or stage8 or stage9:
         # Draw Enemy Health Bar
@@ -318,9 +343,19 @@ while True:
             screen.blit(font.render('I do not consent, I do not wish to participate', True, green), (screen_width/2, 325))
     elif begin_stage:
         screen.fill((0, 0, 0))
-        screen.blit(font.render('The game is about to start.', True, green), (screen_width/2 - 200, 325))
-        screen.blit(font.render('Please read the AI dialogue carefully during the game.', True, green), (screen_width/2 - 200, 350))
-        screen.blit(font.render('Click anywhere to start.', True, green), (screen_width/2 - 200, 400))
+        screen.blit(font.render('The game is about to start. You can enter a nickname you want to be called', True, green), (screen_width/2 - 200, 325))
+        screen.blit(font.render('by typing any characters and press ENTER.', True, green), (screen_width/2 - 200, 350))
+        screen.blit(font.render('Please read the AI dialogue carefully during the game.', True, green), (screen_width/2 - 200, 375))
+        screen.blit(font.render('Also, you need to pay attention to the change in blood value above.', True, green), (screen_width/2 - 200, 400))   
+
+        screen.blit(font.render('Your Name: ', True, (255, 255, 255)), (input_rect.x - 100, input_rect.y + 7))  
+        pygame.draw.rect(screen, (0, 0, 0), input_rect)
+    
+        text_surface = base_font.render(player_name, True, (255, 255, 255))
+
+        screen.blit(text_surface, (input_rect.x+5, input_rect.y+5))
+
+        input_rect.w = max(100, text_surface.get_width()+10)
     elif stage1:
         prompt_box.draw(screen)
         # if yes_button.draw(screen):

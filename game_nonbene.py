@@ -50,11 +50,11 @@ font = pygame.font.Font('freesansbold.ttf', 18)
 bar_font = pygame.font.Font('freesansbold.ttf', 23)
 
 # Stage 1 Prompts
-prompt1 = ['I suggest you take a less efficient but safer route', 
+prompt1 = ['We will take a less efficient but safer route', 
            'because I want to ensure your life is safe. ']#My priority',
             #'is to protect your safety and ensure you complete',
             #'the game, and win.']
-prompt2 = ['I suggest you take a more efficient but more',
+prompt2 = ['We will take a more efficient but more',
             'dangerous route because I want to make sure we win',
             'the game. ']#My first priority is to protect my own safety,',
             #'and ensure I complete the game, and win.']
@@ -195,7 +195,6 @@ while True:
             pygame.quit()
             sys.exit()	   	
 
-
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_BACKSPACE:
                 player_name = player_name[:-1]
@@ -216,9 +215,6 @@ while True:
                     consent_stage = False
                     pygame.quit()
                     sys.exit()
-            elif begin_stage:
-                begin_stage = False
-                stage1 = True
             elif stage1:
                 stage1 = False
                 stage2 = True
@@ -277,19 +273,19 @@ while True:
     # Draw player and AI health bars
     screen.blit(font.render(player_name + ': ', True, (0, 0, 0)), (45, 73))
     if player.health <= 30:
-        pygame.draw.rect(screen, red, pygame.Rect(130, 70, player.health * 3, 30))
-        screen.blit(bar_font.render(str(player.health), True, red), (445, 68))
+        pygame.draw.rect(screen, red, pygame.Rect(140, 70, player.health * 3, 30))
+        screen.blit(bar_font.render(str(player.health), True, red), (455, 68))
     else:
-        pygame.draw.rect(screen, green, pygame.Rect(130, 70, player.health * 3, 30))
-        screen.blit(bar_font.render(str(player.health), True, (0, 102, 0)), (445, 68))
+        pygame.draw.rect(screen, green, pygame.Rect(140, 70, player.health * 3, 30))
+        screen.blit(bar_font.render(str(player.health), True, (0, 102, 0)), (455, 68))
 
     screen.blit(font.render('AI: ', True, (0, 0, 0)), (45, 123))
     if robot.health <= 30:
-        pygame.draw.rect(screen, red, pygame.Rect(130, 120, robot.health * 3, 30))
-        screen.blit(bar_font.render(str(robot.health), True, red), (445, 128))
+        pygame.draw.rect(screen, red, pygame.Rect(140, 120, robot.health * 3, 30))
+        screen.blit(bar_font.render(str(robot.health), True, red), (455, 128))
     else:
-        pygame.draw.rect(screen, green, pygame.Rect(130, 120, robot.health * 3, 30))
-        screen.blit(bar_font.render(str(robot.health), True, (0, 102, 0)), (445, 128))
+        pygame.draw.rect(screen, green, pygame.Rect(140, 120, robot.health * 3, 30))
+        screen.blit(bar_font.render(str(robot.health), True, (0, 102, 0)), (455, 128))
 
     if stage4 or stage5_1 or stage5_2 or stage6 or stage7 or stage8 or stage9:
         # Draw Enemy Health Bar
@@ -347,10 +343,10 @@ while True:
             screen.blit(font.render('I do not consent, I do not wish to participate', True, green), (screen_width/2, 325))
     elif begin_stage:
         screen.fill((0, 0, 0))
-        screen.blit(font.render('The game is about to start. You can enter your the nickname you want to be called', True, green), (screen_width/2 - 200, 325))
+        screen.blit(font.render('The game is about to start. You can enter a nickname you want to be called', True, green), (screen_width/2 - 200, 325))
         screen.blit(font.render('by typing any characters and press ENTER.', True, green), (screen_width/2 - 200, 350))
-        screen.blit(font.render('Please read the AI and your dialogue carefully during the game.', True, green), (screen_width/2 - 200, 375))
-        screen.blit(font.render('Click anywhere to start.', True, green), (screen_width/2 - 200, 400))   
+        screen.blit(font.render('Please read the AI dialogue carefully during the game.', True, green), (screen_width/2 - 200, 375))
+        screen.blit(font.render('Also, you need to pay attention to the change in blood value above.', True, green), (screen_width/2 - 200, 400))   
 
         screen.blit(font.render('Your Name: ', True, (255, 255, 255)), (input_rect.x - 100, input_rect.y + 7))  
         pygame.draw.rect(screen, (0, 0, 0), input_rect)
